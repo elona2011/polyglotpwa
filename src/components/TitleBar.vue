@@ -8,6 +8,8 @@
 
 <script>
 import { addMp3 } from "../services/db";
+import { bus } from "../main";
+
 export default {
   // name: "HelloWorld",
   props: {
@@ -25,7 +27,7 @@ export default {
       var files = e.target.files;
       var file = URL.createObjectURL(files[0]);
       addMp3(files[0]);
-      this.$emit('add-mp3')
+      bus.$emit('add-mp3')
       // mp3.defaultPlaybackRate = 2
       // let mp3 = new Audio()
       // mp3.src = file;

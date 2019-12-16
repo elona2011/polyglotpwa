@@ -31,7 +31,9 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-console": false
+      "no-console": "warn",
+      "no-unused-vars": "warn",
+      "no-debugger": "warn"
     },
     "parserOptions": {
       "parser": "babel-eslint"

@@ -62,6 +62,7 @@ body {
 }
 section {
   flex: 12;
+  overflow-y: scroll;
 }
 footer {
   flex: 1;
