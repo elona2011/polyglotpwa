@@ -1,9 +1,8 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="List">
+      <TitleBar title="Word List">
         <strong @click="clickPlus">+</strong>
-        <input @change="addMp3" id="audio_file" type="file" accept="audio/*" style="display:none;" />
       </TitleBar>
     </header>
     <section>
@@ -14,7 +13,7 @@
           @pointerdown="down($event,item)"
           @pointermove="move($event,item)"
           @pointerup="up($event,item)"
-          @click="play(item)"
+          @click="detail(item)"
         >
           <div>
             <span>{{item.name}}</span>
@@ -27,7 +26,7 @@
 </template>
 
 <script>
-import { getListMp3, delMp3ById, addMp3 } from "../services/db";
+import { getListWordByForget, delWordById } from "../services/db";
 import { bus } from "../main";
 import TitleBar from "./TitleBar";
 
@@ -42,7 +41,8 @@ export default {
     TitleBar
   },
   async created() {
-    this.list = await getListMp3();
+    let list = await getListWordByForget();
+    this.list = list.reverse()
   },
   methods: {
     down(e) {
@@ -62,27 +62,20 @@ export default {
       if (li) {
         let rect = li.getBoundingClientRect();
         if (Math.abs(offset) > rect.width / 2) {
-          delMp3ById(item.id);
-          this.list = await getListMp3();
+          delWordById(item.id);
+          this.list = await getListWordByForget();
         } else {
           li.setAttribute("style", ``);
         }
         // li.releasePointerCapture(e.pointerId);
       }
     },
-    play(item) {
-      this.$router.push({ path: `/play/${item.id}` });
+    detail(item) {
+      this.$router.push({ path: `/worddetail/${item.id}` });
     },
     clickPlus() {
-      let audio_file = document.querySelector("#audio_file");
-      audio_file.click();
+      this.$router.push({ path: `/wordadd` });
     },
-    async addMp3(e) {
-      var files = e.target.files;
-      var file = URL.createObjectURL(files[0]);
-      await addMp3(files[0]);
-      this.list = await getListMp3();
-    }
   }
 };
 </script>

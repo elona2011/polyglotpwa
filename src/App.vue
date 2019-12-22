@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <header>
-      <TitleBar @add-mp3="addMp3" />
-    </header>
     <section>
-      <AudioList />
+      <router-view></router-view>
     </section>
     <footer>
       <nav>
         <ul>
           <li>
-            <a href="#">听力</a>
+            <a href="#/">听力</a>
           </li>
           <li>
             <a href="#">录音</a>
+          </li>
+          <li>
+            <a href="#/words">单词</a>
           </li>
         </ul>
       </nav>
@@ -22,21 +22,7 @@
 </template>
 
 <script>
-import TitleBar from "./components/TitleBar.vue";
-import AudioList from "./components/AudioList.vue";
-
-export default {
-  name: "app",
-  components: {
-    TitleBar,
-    AudioList
-  },
-  methods: {
-    addMp3() {
-      console.log("mp3");
-    }
-  }
-};
+export default {};
 </script>
 
 <style>
@@ -71,6 +57,10 @@ footer {
   justify-content: center;
   background-color: #eee;
 }
+footer nav,
+footer nav ul {
+  height: 100%;
+}
 footer ul {
   display: flex;
 }
@@ -80,10 +70,10 @@ footer ul li {
 }
 footer ul li a {
   text-decoration: none;
-}
-header {
-  flex: 1;
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 </style>

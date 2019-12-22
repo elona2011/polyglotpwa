@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p>状态栏</p>
-    <strong @click="clickPlus">+</strong>
-    <input @change="getMp3" id="audio_file" type="file" accept="audio/*" style="display:none;" />
+    <p>{{title}}</p>
+    <slot></slot>
+    
   </div>
 </template>
 
@@ -11,23 +11,25 @@ import { addMp3 } from "../services/db";
 import { bus } from "../main";
 
 export default {
-  // name: "HelloWorld",
   props: {
-    msg: String
+    title: String
+  },
+  created() {
+    bus.$on("TitleBar", e => {
+      this.title = e.title;
+    });
   },
   methods: {
     clickPlus() {
       // let mp3select = document.createElement("input");
       let audio_file = document.querySelector("#audio_file");
       audio_file.click();
-
-      console.log(1);
     },
     getMp3(e) {
       var files = e.target.files;
       var file = URL.createObjectURL(files[0]);
       addMp3(files[0]);
-      bus.$emit('add-mp3')
+      bus.$emit("add-mp3");
       // mp3.defaultPlaybackRate = 2
       // let mp3 = new Audio()
       // mp3.src = file;
