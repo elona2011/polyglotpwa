@@ -8,7 +8,10 @@
         <div class="name-value-reset">
           <span class="name">速率</span>
           <span class="value">{{speedValue}}</span>
-          <button class="reset" @click="speedReset">复位</button>
+          <button
+            class="reset"
+            @click="speedReset"
+          >复位</button>
         </div>
         <input
           type="range"
@@ -44,7 +47,10 @@
         />
       </div>
       <div>
-        <button class="play" @click="playStop">{{playText}}</button>
+        <button
+          class="play"
+          @click="playStop"
+        >{{playText}}</button>
       </div>
     </section>
   </div>
@@ -55,9 +61,7 @@ import { getMp3ById } from "../services/db";
 import { bus } from "../main";
 import TitleBar from "./TitleBar";
 
-let mp3 = new Audio();
-mp3.loop = true;
-
+let file, objectURL;
 export default {
   data() {
     return {
@@ -74,18 +78,9 @@ export default {
     TitleBar
   },
   async created() {
-    let file = await getMp3ById(+this.$route.params.id);
-    let objectURL = URL.createObjectURL(file);
-    mp3.src = objectURL;
-    mp3.addEventListener("loadedmetadata", () => {
-      this.duration = mp3.duration;
-    });
-    mp3.addEventListener("timeupdate", e => {
-      this.playedTime = mp3.currentTime.toFixed(2);
-      this.playedTime_bar = this.isHoldProgressButton
-        ? this.playedTime_bar
-        : this.playedTime;
-    });
+    file = await getMp3ById(+this.$route.params.id);
+    objectURL = URL.createObjectURL(file);
+
     this.fileName = file.name;
   },
   computed: {
@@ -97,20 +92,22 @@ export default {
     playStop() {
       if (this.isPlay) {
         this.isPlay = false;
-        mp3.pause();
+        bus.$emit("mp3", { name: "", status: "stop" });
+        // mp3.pause();
       } else {
         this.isPlay = true;
-        mp3.play();
+        bus.$emit("mp3", { name: "", status: "start" });
+        // mp3.play();
       }
     },
     changeSpeed(e) {
-      mp3.playbackRate = +e.target.value;
+      // mp3.playbackRate = +e.target.value;
     },
     speedReset() {
-      mp3.playbackRate = this.speedValue = 1;
+      // mp3.playbackRate = this.speedValue = 1;
     },
     setPlayedTime(e) {
-      mp3.currentTime = e.target.value;
+      // mp3.currentTime = e.target.value;
     },
     down(e) {
       this.isHoldProgressButton = true;

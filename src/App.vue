@@ -7,10 +7,10 @@
       <nav>
         <ul>
           <li>
-            <a href="#/">听力</a>
+            <a href="#/">Home</a>
           </li>
           <li>
-            <a href="#">录音</a>
+            <a href="#/listen">听力</a>
           </li>
           <li>
             <a href="#/words">单词</a>
@@ -22,7 +22,35 @@
 </template>
 
 <script>
-export default {};
+import { getMp3ById } from "./services/db";
+import { bus } from "./main";
+
+let mp3Id;
+let mp3 = new Audio();
+mp3.loop = true;
+
+export default {
+  async created() {
+    if (mp3Id) {
+      let file = await getMp3ById(+mp3Id);
+      let objectURL = URL.createObjectURL(file);
+      mp3.src = objectURL;
+      mp3.addEventListener("loadedmetadata", () => {
+        this.duration = mp3.duration;
+      });
+      mp3.addEventListener("timeupdate", e => {
+        this.playedTime = mp3.currentTime.toFixed(2);
+        this.playedTime_bar = this.isHoldProgressButton
+          ? this.playedTime_bar
+          : this.playedTime;
+      });
+    }
+    bus.$on("mp3-play", e => {
+      e
+      debugger
+    });
+  }
+};
 </script>
 
 <style>

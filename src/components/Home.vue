@@ -1,33 +1,20 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="List">
+      <TitleBar title="Home">
         <strong @click="clickPlus">+</strong>
         <input @change="addMp3" id="audio_file" type="file" accept="audio/*" style="display:none;" />
       </TitleBar>
     </header>
     <section>
-      <ul>
-        <li
-          v-for="item in list"
-          :key="item.id"
-          @pointerdown="down($event,item)"
-          @pointermove="move($event,item)"
-          @pointerup="up($event,item)"
-          @click="play(item)"
-        >
-          <div>
-            <span>{{item.name}}</span>
-            <span>{{item.length}}</span>
-          </div>
-        </li>
-      </ul>
+      home
     </section>
   </div>
 </template>
 
 <script>
 import { getListMp3, delMp3ById, addMp3 } from "../services/db";
+import { bus } from "../main";
 import TitleBar from "./TitleBar";
 
 let x, li, offset;

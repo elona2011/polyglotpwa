@@ -1,3 +1,4 @@
+import Home from "./components/Home.vue";
 import AudioList from "./components/AudioList.vue";
 import AudioPlay from "./components/AudioPlay.vue";
 import WordList from "./components/WordList.vue";
@@ -7,6 +8,9 @@ import WordDetail from "./components/WordDetail.vue";
 export default [
   {
     path: '/',
+    component: Home
+  },{
+    path: '/listen',
     component: AudioList
   }, {
     path: '/play/:id',
