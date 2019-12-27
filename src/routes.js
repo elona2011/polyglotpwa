@@ -7,18 +7,23 @@ import WordDetail from "./components/WordDetail.vue";
 
 export default [
   {
-    path: '/',
+    name: 'home',
+    path: '/home',
     component: Home
-  },{
+  }, {
+    name: 'listen',
     path: '/listen',
     component: AudioList
   }, {
+    name: 'play',
     path: '/play/:id',
     component: AudioPlay
   }, {
+    name: 'words',
     path: '/words',
     component: WordList
   }, {
+    name: 'wordadd',
     path: '/wordadd',
     component: WordAdd
   }, {

@@ -1,13 +1,13 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar :title="fileName" />
+      <TitleBar :title="mp3.name" />
     </header>
     <section class="setup-group">
       <div class="group-item">
         <div class="name-value-reset">
           <span class="name">速率</span>
-          <span class="value">{{speedValue}}</span>
+          <span class="value">{{mp3.playbackRate}}</span>
           <button
             class="reset"
             @click="speedReset"
@@ -20,7 +20,7 @@
           min="0.7"
           max="2"
           step="0.05"
-          v-model="speedValue"
+          v-model="mp3.playbackRate"
           @change="changeSpeed"
         />
       </div>
@@ -28,95 +28,77 @@
     <section class="play-group">
       <div>
         <span>0</span>
-        <span>{{playedTime}}</span>
-        <span>{{duration}}</span>
+        <span>{{mp3.currentTime.toFixed(2)}}</span>
+        <span>{{mp3.duration.toFixed(2)}}</span>
       </div>
       <div>
         <input
           type="range"
           name
-          id="playedTime"
           min="0"
-          :max="duration"
+          :max="mp3.duration"
           step="1"
-          :value="playedTime_bar"
+          :value="currentTime"
           @change="setPlayedTime"
           @input="valueInput"
           @pointerdown="down"
           @pointerup="up"
         />
       </div>
-      <div>
+      <!-- <div>
         <button
           class="play"
           @click="playStop"
         >{{playText}}</button>
-      </div>
+      </div> -->
     </section>
   </div>
 </template>
 
 <script>
+import { playNewMp3, mp3 } from "../services/mp3";
 import { getMp3ById } from "../services/db";
-import { bus } from "../main";
 import TitleBar from "./TitleBar";
 
-let file, objectURL;
 export default {
   data() {
     return {
-      isPlay: false,
-      speedValue: 1,
-      playedTime: 0,
-      playedTime_bar: 0,
-      duration: 0,
-      isHoldProgressButton: false,
-      fileName: ""
+      mp3,
+      currentTimeSet: 0,
+      isHoldProgressButton: false
     };
   },
   components: {
     TitleBar
   },
   async created() {
-    file = await getMp3ById(+this.$route.params.id);
-    objectURL = URL.createObjectURL(file);
-
-    this.fileName = file.name;
+    let file = await getMp3ById(+this.$route.params.id);
+    mp3.init(file)
+    playNewMp3(file);
   },
   computed: {
-    playText() {
-      return this.isPlay ? "Pause" : "Play";
+    currentTime() {
+      return this.isHoldProgressButton ? this.currentTimeSet : mp3.currentTime;
     }
   },
   methods: {
-    playStop() {
-      if (this.isPlay) {
-        this.isPlay = false;
-        bus.$emit("mp3", { name: "", status: "stop" });
-        // mp3.pause();
-      } else {
-        this.isPlay = true;
-        bus.$emit("mp3", { name: "", status: "start" });
-        // mp3.play();
-      }
-    },
     changeSpeed(e) {
-      // mp3.playbackRate = +e.target.value;
+      mp3.setPlaybackRate(+e.target.value);
     },
     speedReset() {
-      // mp3.playbackRate = this.speedValue = 1;
+      mp3.setPlaybackRate(1);
     },
-    setPlayedTime(e) {
-      // mp3.currentTime = e.target.value;
+    setPlayedTime() {
+      mp3.setCurrentTime(this.currentTimeSet);
     },
-    down(e) {
+    down() {
       this.isHoldProgressButton = true;
     },
     up() {
       this.isHoldProgressButton = false;
     },
     valueInput(e) {
-      this.playedTime_bar = e.target.value;
+      this.currentTimeSet = +e.target.value;
     }
   }
 };

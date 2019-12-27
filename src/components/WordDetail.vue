@@ -5,8 +5,7 @@
     </header>
     <section class="setup-group">
       <div class="group-item">
-        <div class="name-value-reset">
-          <span class="name">word:</span>
+        <div class="word">
           <span class="name">{{word.name}}</span>
         </div>
         <div class="name-value-reset">
@@ -21,8 +20,14 @@
     </section>
     <section class="play-group">
       <div>
-        <button class="remember" @click="remember">Remember</button>
-        <button class="forget" @click="forget">Forget</button>
+        <button
+          class="remember"
+          @click="remember"
+        >Remember</button>
+        <button
+          class="forget"
+          @click="forget"
+        >Forget</button>
       </div>
     </section>
   </div>
@@ -86,13 +91,16 @@ div section.play-group {
   justify-content: center;
 }
 .group-item {
-  height: 15vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.name-value-reset {
+.word {
   flex: 1;
+  font-size: 80vw;
+}
+.name-value-reset {
   display: flex;
   justify-content: center;
 }

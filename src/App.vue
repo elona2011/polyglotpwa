@@ -6,14 +6,17 @@
     <footer>
       <nav>
         <ul>
-          <li>
-            <a href="#/">Home</a>
+          <li @click="homeClick">
+            <span>Home</span>
           </li>
-          <li>
-            <a href="#/listen">听力</a>
+          <li @click="ListenClick">
+            <span>Listen</span>
           </li>
-          <li>
-            <a href="#/words">单词</a>
+          <li @click="PlayClick">
+            <span :class="{'icon-play':!isPlay,'icon-pause':isPlay}"></span>
+          </li>
+          <li @click="wordClick">
+            <span>单词</span>
           </li>
         </ul>
       </nav>
@@ -22,38 +25,67 @@
 </template>
 
 <script>
-import { getMp3ById } from "./services/db";
-import { bus } from "./main";
-
-let mp3Id;
-let mp3 = new Audio();
-mp3.loop = true;
+import { continuePauseOrPlayFirst, mp3 } from "./services/mp3";
 
 export default {
-  async created() {
-    if (mp3Id) {
-      let file = await getMp3ById(+mp3Id);
-      let objectURL = URL.createObjectURL(file);
-      mp3.src = objectURL;
-      mp3.addEventListener("loadedmetadata", () => {
-        this.duration = mp3.duration;
-      });
-      mp3.addEventListener("timeupdate", e => {
-        this.playedTime = mp3.currentTime.toFixed(2);
-        this.playedTime_bar = this.isHoldProgressButton
-          ? this.playedTime_bar
-          : this.playedTime;
-      });
+  data() {
+    return {
+      mp3
+    };
+  },
+  created() {},
+  methods: {
+    homeClick() {
+      this.$router.push({ name: "home" });
+    },
+    ListenClick() {
+      this.$router.push({ name: "listen" });
+    },
+    PlayClick(){
+      continuePauseOrPlayFirst();
+    },
+    wordClick() {
+      this.$router.push({ name: "words" });
+    },
+    playClass() {}
+  },
+  computed: {
+    isPlay() {
+      return mp3.isPlay;
     }
-    bus.$on("mp3-play", e => {
-      e
-      debugger
-    });
   }
 };
 </script>
 
 <style>
+@font-face {
+  font-family: icomoon;
+  src: url("assets/fonts/icomoon.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icomoon" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-play:before {
+  content: "\ea1c";
+}
+.icon-pause:before {
+  content: "\ea1d";
+}
 * {
   margin: 0;
   padding: 0;
@@ -95,13 +127,13 @@ footer ul {
 footer ul li {
   list-style: none;
   flex: 1;
+  position: relative;
 }
-footer ul li a {
-  text-decoration: none;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+footer ul li span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  user-select: none;
 }
 </style>
