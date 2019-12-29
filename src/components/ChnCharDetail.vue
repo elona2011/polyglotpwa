@@ -5,42 +5,63 @@
     </header>
     <section class="setup-group">
       <div class="group-item">
+        <div class="word">
+          <span class="name" :style="{fontSize}">{{word.name}}</span>
+        </div>
         <div class="name-value-reset">
-          <span class="name">word:</span>
-          <input type="text" name id="newWord" v-model="newWord" />
+          <span class="name">remember:</span>
+          <span class="name">{{word.remember}}</span>
+        </div>
+        <div class="name-value-reset">
+          <span class="name">forget:</span>
+          <span class="name">{{word.forget}}</span>
         </div>
       </div>
     </section>
     <section class="play-group">
       <div>
-        <button class="play" @click="Add">Add</button>
+        <button class="remember" @click="remember">Remember</button>
+        <button class="forget" @click="forget">Forget</button>
       </div>
     </section>
   </div>
 </template>
 
 <script>
-import { addWord } from "../services/db";
+import { ChnChar } from "../services/ChnChar";
 import { bus } from "../main";
 import TitleBar from "./TitleBar";
 
+let c = new ChnChar()
 export default {
   data() {
     return {
-      newWord: ""
+      word: {}
     };
   },
   components: {
     TitleBar
   },
-  async created() {},
-  computed: {},
+  async created() {
+    this.word = await c.getById(+this.$route.params.id);
+  },
+  computed: {
+    fontSize() {
+      return this.word.name
+        ? (80 / this.word.name.length).toFixed(0) + "vw"
+        : "10vw";
+    }
+  },
   methods: {
-    async Add() {
-      if (this.newWord) {
-        await addWord({ name: this.newWord, forget: 0, remember: 0 });
-        this.$router.push({ path: "/words" });
-      }
+    async remember() {
+      this.word.remember++;
+      await c.addWord(this.word);
+      this.$router.push({ path: "/words" });
+    },
+    async forget() {
+      this.word.forget++;
+      await c.addWord(this.word);
+      this.$router.push({ path: "/words" });
     }
   }
 };
@@ -70,13 +91,22 @@ div section.play-group {
   justify-content: center;
 }
 .group-item {
-  height: 5vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.name-value-reset {
+.word {
   flex: 1;
+  position: relative;
+}
+.word .name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.name-value-reset {
   display: flex;
   justify-content: center;
 }
@@ -113,9 +143,12 @@ section.play-group div span {
 section.play-group div input {
   flex: 1;
 }
-button.play {
+section.play-group button {
   border: none;
   width: 15vw;
-  background-color: yellow;
+  flex: 1;
+}
+section.play-group button.remember {
+  background-color: greenyellow;
 }
 </style>

@@ -15,9 +15,6 @@
           <li @click="PlayClick">
             <span :class="{'icon-play':!isPlay,'icon-pause':isPlay}"></span>
           </li>
-          <li @click="wordClick">
-            <span>单词</span>
-          </li>
         </ul>
       </nav>
     </footer>
@@ -41,13 +38,9 @@ export default {
     ListenClick() {
       this.$router.push({ name: "listen" });
     },
-    PlayClick(){
+    PlayClick() {
       continuePauseOrPlayFirst();
-    },
-    wordClick() {
-      this.$router.push({ name: "words" });
-    },
-    playClass() {}
+    }
   },
   computed: {
     isPlay() {

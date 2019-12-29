@@ -1,14 +1,17 @@
 import Home from "./components/Home.vue";
 import AudioList from "./components/AudioList.vue";
 import AudioPlay from "./components/AudioPlay.vue";
-import WordList from "./components/WordList.vue";
-import WordAdd from "./components/WordAdd.vue";
-import WordDetail from "./components/WordDetail.vue";
+import EngWordList from "./components/EngWordList.vue";
+import EngWordAdd from "./components/EngWordAdd.vue";
+import EngWordDetail from "./components/EngWordDetail.vue";
+import ChnCharList from "./components/ChnCharList.vue";
+import ChnCharAdd from "./components/ChnCharAdd.vue";
+import ChnCharDetail from "./components/ChnCharDetail.vue";
 
 export default [
   {
     name: 'home',
-    path: '/home',
+    path: '/',
     component: Home
   }, {
     name: 'listen',
@@ -19,15 +22,26 @@ export default [
     path: '/play/:id',
     component: AudioPlay
   }, {
-    name: 'words',
-    path: '/words',
-    component: WordList
+    name: 'ChnCharList',
+    path: '/ChnCharList',
+    component: ChnCharList
   }, {
-    name: 'wordadd',
-    path: '/wordadd',
-    component: WordAdd
+    name: 'ChnCharAdd',
+    path: '/ChnCharAdd',
+    component: ChnCharAdd
   }, {
-    path: '/worddetail/:id',
-    component: WordDetail
+    path: '/ChnCharDetail/:id',
+    component: ChnCharDetail
+  }, {
+    name: 'EngWordList',
+    path: '/EngWordList',
+    component: EngWordList
+  }, {
+    name: 'EngWordAdd',
+    path: '/EngWordAdd',
+    component: EngWordAdd
+  }, {
+    path: '/EngWordDetail/:id',
+    component: EngWordDetail
   }
 ]

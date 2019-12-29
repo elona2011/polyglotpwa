@@ -1,13 +1,18 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="Home">
-        <strong @click="clickPlus">+</strong>
-        <input @change="addMp3" id="audio_file" type="file" accept="audio/*" style="display:none;" />
-      </TitleBar>
+      <TitleBar title="Home" :show-back="false"></TitleBar>
     </header>
     <section>
-      home
+      <div @click="chineseChar">识字</div>
+      <div>语文</div>
+      <div @click="engWord">英语单词</div>
+      <div>英语句子</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
     </section>
   </div>
 </template>
@@ -31,43 +36,11 @@ export default {
     this.list = await getListMp3();
   },
   methods: {
-    down(e) {
-      x = e.x;
+    chineseChar() {
+      this.$router.push({ name: `ChnCharList` });
     },
-    move(e) {
-      e.preventDefault();
-      li = e.target.closest("li");
-
-      // li.setPointerCapture(e.pointerId)
-      offset = e.x - x;
-      if (offset < 0) {
-        li.setAttribute("style", `transform:translate(${offset}px);`);
-      }
-    },
-    async up(e, item) {
-      if (li) {
-        let rect = li.getBoundingClientRect();
-        if (Math.abs(offset) > rect.width / 2) {
-          delMp3ById(item.id);
-          this.list = await getListMp3();
-        } else {
-          li.setAttribute("style", ``);
-        }
-        // li.releasePointerCapture(e.pointerId);
-      }
-    },
-    play(item) {
-      this.$router.push({ path: `/play/${item.id}` });
-    },
-    clickPlus() {
-      let audio_file = document.querySelector("#audio_file");
-      audio_file.click();
-    },
-    async addMp3(e) {
-      var files = e.target.files;
-      var file = URL.createObjectURL(files[0]);
-      await addMp3(files[0]);
-      this.list = await getListMp3();
+    engWord() {
+      this.$router.push({ name: `EngWordList` });
     }
   }
 };
@@ -87,21 +60,15 @@ div.main header {
   justify-content: center;
   background-color: #eee;
 }
-li {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 8vh;
-  background-color: bisque;
-  margin-bottom: 2px;
-  position: relative;
-  touch-action: pan-y;
+section {
+  display: inline-grid;
+  grid-template-columns: 33.3vw 33.3vw 33.3vw;
+  grid-template-rows: 33.3vw 33.3vw 33.3vw;
 }
-li div {
+section div {
   display: flex;
   justify-content: center;
-}
-li span {
-  flex: 1;
+  align-items: center;
+  border: 1px solid #eee;
 }
 </style>

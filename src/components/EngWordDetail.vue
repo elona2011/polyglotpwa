@@ -6,7 +6,7 @@
     <section class="setup-group">
       <div class="group-item">
         <div class="word">
-          <span class="name">{{word.name}}</span>
+          <span class="name" :style="{fontSize}">{{word.name}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">remember:</span>
@@ -20,14 +20,8 @@
     </section>
     <section class="play-group">
       <div>
-        <button
-          class="remember"
-          @click="remember"
-        >Remember</button>
-        <button
-          class="forget"
-          @click="forget"
-        >Forget</button>
+        <button class="remember" @click="remember">Remember</button>
+        <button class="forget" @click="forget">Forget</button>
       </div>
     </section>
   </div>
@@ -51,7 +45,13 @@ export default {
     let word = await getWordById(+this.$route.params.id);
     this.word = word;
   },
-  computed: {},
+  computed: {
+    fontSize() {
+      return this.word.name
+        ? (80 / this.word.name.length).toFixed(0) + "vw"
+        : "10vw";
+    }
+  },
   methods: {
     async remember() {
       this.word.remember++;
@@ -98,7 +98,13 @@ div section.play-group {
 }
 .word {
   flex: 1;
-  font-size: 80vw;
+  position: relative;
+}
+.word .name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .name-value-reset {
   display: flex;

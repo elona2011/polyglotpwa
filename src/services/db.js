@@ -19,7 +19,12 @@ export const getListWordByForget = async () => {
   return await index.getAll()
 }
 
-let dbPromise = openMyDB()
+export const getStore = async storeName => {
+  let db = await dbPromise
+  return db.transaction(storeName).objectStore(storeName)
+}
+
+export let dbPromise = openMyDB()
 
 function openMyDB() {
   return openDB(dbName, version, {

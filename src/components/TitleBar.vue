@@ -1,8 +1,8 @@
 <template>
   <div>
+    <span @click="goBack" v-if="showBack">&lt;</span>
     <p>{{title}}</p>
     <slot></slot>
-    
   </div>
 </template>
 
@@ -12,7 +12,11 @@ import { bus } from "../main";
 
 export default {
   props: {
-    title: String
+    title: String,
+    showBack: {
+      type: Boolean,
+      default: true
+    }
   },
   created() {
     bus.$on("TitleBar", e => {
@@ -20,6 +24,13 @@ export default {
     });
   },
   methods: {
+    goBack() {
+      // if (this.parentName) {
+      //   this.$router.push({ name: this.parentName });
+      // } else {
+      this.$router.go(-1);
+      // }
+    },
     clickPlus() {
       // let mp3select = document.createElement("input");
       let audio_file = document.querySelector("#audio_file");
@@ -44,6 +55,12 @@ export default {
 div {
   flex: 1;
   display: flex;
+}
+div span {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 div p {
   flex: 8;
