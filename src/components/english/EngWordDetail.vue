@@ -28,9 +28,8 @@
 </template>
 
 <script>
-import { getWordById, addWord } from "../services/db";
-import { bus } from "../main";
-import TitleBar from "./TitleBar";
+import { getWordById, addWord } from "../../services/db";
+import TitleBar from "../TitleBar";
 
 export default {
   data() {

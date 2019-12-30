@@ -1,20 +1,32 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="语文" parent-name="home">
+      <TitleBar
+        title="语文"
+        parent-name="home"
+      >
         <strong @click="clickPlus">+</strong>
       </TitleBar>
     </header>
-    <ListInline :list="list" base-path="/ChnCharDetail" />
+    <section>
+      <ul>
+        <li
+          v-for="item in list"
+          :key="item.id"
+          @click="detail(item)"
+        >
+          <span>{{item.name}}</span>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
 <script>
-import { ChnChar } from "../services/ChnChar";
-import { bus } from "../main";
-import TitleBar from "./TitleBar";
-import ListInline from "./ListInline";
+import { ChnChar } from "./ChnChar";
+import TitleBar from "../TitleBar";
 
+let chnChar = new ChnChar()
 export default {
   data() {
     return {
@@ -22,16 +34,18 @@ export default {
     };
   },
   components: {
-    TitleBar,
-    ListInline
+    TitleBar
   },
   async created() {
-    let list = await new ChnChar().getList();
-    this.list = list.reverse();
+    this.list = await chnChar.getList();
   },
   methods: {
     clickPlus() {
       this.$router.push({ path: `/ChnCharAdd` });
+    },
+    detail(item) {
+      chnChar.setCurrent(item)
+      this.$router.push({ path: `/ChnCharDetail` });
     }
   }
 };

@@ -1,21 +1,32 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="单词" parent-name="home">
+      <TitleBar
+        title="识字"
+        parent-name="home"
+      >
         <strong @click="clickPlus">+</strong>
       </TitleBar>
     </header>
-    <ListInline :list="list" base-path="/ChnCharDetail" />
+    <section>
+      <ul>
+        <li
+          v-for="item in list"
+          :key="item.id"
+          @click="detail(item)"
+        >
+          <span>{{item.name}}</span>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
 <script>
-import { getListWordByForget, delWordById } from "../services/db";
-import { bus } from "../main";
-import TitleBar from "./TitleBar";
-import ListInline from "./ListInline";
+import { ChnChar } from "./ChnChar";
+import TitleBar from "../TitleBar";
 
-let x, li, offset;
+let chnChar = new ChnChar('words')
 export default {
   data() {
     return {
@@ -23,16 +34,18 @@ export default {
     };
   },
   components: {
-    TitleBar,
-    ListInline
+    TitleBar
   },
   async created() {
-    let list = await getListWordByForget();
-    this.list = list.reverse();
+    this.list = await chnChar.getList();
   },
   methods: {
     clickPlus() {
       this.$router.push({ path: `/ChnCharAdd` });
+    },
+    detail(item) {
+      chnChar.setCurrent(item)
+      this.$router.push({ path: `/ChnCharDetail` });
     }
   }
 };

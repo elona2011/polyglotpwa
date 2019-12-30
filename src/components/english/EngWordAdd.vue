@@ -5,63 +5,41 @@
     </header>
     <section class="setup-group">
       <div class="group-item">
-        <div class="word">
-          <span class="name" :style="{fontSize}">{{word.name}}</span>
-        </div>
         <div class="name-value-reset">
-          <span class="name">remember:</span>
-          <span class="name">{{word.remember}}</span>
-        </div>
-        <div class="name-value-reset">
-          <span class="name">forget:</span>
-          <span class="name">{{word.forget}}</span>
+          <span class="name">word:</span>
+          <input type="text" name id="newWord" v-model="newWord" />
         </div>
       </div>
     </section>
     <section class="play-group">
       <div>
-        <button class="remember" @click="remember">Remember</button>
-        <button class="forget" @click="forget">Forget</button>
+        <button class="play" @click="Add">Add</button>
       </div>
     </section>
   </div>
 </template>
 
 <script>
-import { ChnChar } from "../services/ChnChar";
-import { bus } from "../main";
-import TitleBar from "./TitleBar";
+import { addWord } from "../../services/db";
+import TitleBar from "../TitleBar";
 
-let c = new ChnChar()
 export default {
   data() {
     return {
-      word: {}
+      newWord: ""
     };
   },
   components: {
     TitleBar
   },
-  async created() {
-    this.word = await c.getById(+this.$route.params.id);
-  },
-  computed: {
-    fontSize() {
-      return this.word.name
-        ? (80 / this.word.name.length).toFixed(0) + "vw"
-        : "10vw";
-    }
-  },
+  async created() {},
+  computed: {},
   methods: {
-    async remember() {
-      this.word.remember++;
-      await c.addWord(this.word);
-      this.$router.push({ path: "/words" });
-    },
-    async forget() {
-      this.word.forget++;
-      await c.addWord(this.word);
-      this.$router.push({ path: "/words" });
+    async Add() {
+      if (this.newWord) {
+        await addWord({ name: this.newWord, forget: 0, remember: 0 });
+        this.$router.push({ name: "ChnCharList" });
+      }
     }
   }
 };
@@ -91,22 +69,13 @@ div section.play-group {
   justify-content: center;
 }
 .group-item {
-  height: 100%;
+  height: 5vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.word {
-  flex: 1;
-  position: relative;
-}
-.word .name {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 .name-value-reset {
+  flex: 1;
   display: flex;
   justify-content: center;
 }
@@ -143,12 +112,9 @@ section.play-group div span {
 section.play-group div input {
   flex: 1;
 }
-section.play-group button {
+button.play {
   border: none;
   width: 15vw;
-  flex: 1;
-}
-section.play-group button.remember {
-  background-color: greenyellow;
+  background-color: yellow;
 }
 </style>

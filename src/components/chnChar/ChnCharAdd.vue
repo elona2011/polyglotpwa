@@ -20,9 +20,8 @@
 </template>
 
 <script>
-import { addWord } from "../services/db";
-import { bus } from "../main";
-import TitleBar from "./TitleBar";
+import { ChnChar } from "./ChnChar";
+import TitleBar from "../TitleBar";
 
 export default {
   data() {
@@ -36,9 +35,9 @@ export default {
   async created() {},
   computed: {},
   methods: {
-    async Add() {
+    Add() {
       if (this.newWord) {
-        await addWord({ name: this.newWord, forget: 0, remember: 0 });
+        new ChnChar('words').addWord({ name: this.newWord, forget: 0, remember: 0 });
         this.$router.push({ name: "ChnCharList" });
       }
     }

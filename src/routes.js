@@ -1,12 +1,13 @@
 import Home from "./components/Home.vue";
 import AudioList from "./components/AudioList.vue";
 import AudioPlay from "./components/AudioPlay.vue";
-import EngWordList from "./components/EngWordList.vue";
-import EngWordAdd from "./components/EngWordAdd.vue";
-import EngWordDetail from "./components/EngWordDetail.vue";
-import ChnCharList from "./components/ChnCharList.vue";
-import ChnCharAdd from "./components/ChnCharAdd.vue";
-import ChnCharDetail from "./components/ChnCharDetail.vue";
+import EngWordList from "./components/english/EngWordList.vue";
+import EngWordAdd from "./components/english/EngWordAdd.vue";
+import EngWordDetail from "./components/english/EngWordDetail.vue";
+import ChnCharList from "./components/chnChar/ChnCharList.vue";
+import ChnCharAdd from "./components/chnChar/ChnCharAdd.vue";
+import ChnCharDetail from "./components/chnChar/ChnCharDetail.vue";
+import ListCnWords from "./components/chnChar/ListCnWords.vue";
 
 export default [
   {
@@ -30,8 +31,12 @@ export default [
     path: '/ChnCharAdd',
     component: ChnCharAdd
   }, {
-    path: '/ChnCharDetail/:id',
+    path: '/ChnCharDetail',
     component: ChnCharDetail
+  },{
+    name: 'ListCnWords',
+    path: '/ListCnWords',
+    component: ListCnWords
   }, {
     name: 'EngWordList',
     path: '/EngWordList',

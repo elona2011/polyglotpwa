@@ -5,7 +5,7 @@
     </header>
     <section>
       <div @click="chineseChar">识字</div>
-      <div>语文</div>
+      <div @click="cnWord">语文</div>
       <div @click="engWord">英语单词</div>
       <div>英语句子</div>
       <div>5</div>
@@ -38,6 +38,9 @@ export default {
   methods: {
     chineseChar() {
       this.$router.push({ name: `ChnCharList` });
+    },
+    cnWord(){
+      this.$router.push({ name: `ListCnWords` });
     },
     engWord() {
       this.$router.push({ name: `EngWordList` });

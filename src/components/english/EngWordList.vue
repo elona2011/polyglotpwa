@@ -1,22 +1,34 @@
 <template>
-  <section>
-    <ul>
-      <li v-for="item in list" :key="item.id" @click="detail(item)">
-        <span>{{item.name}}</span>
-      </li>
-    </ul>
-  </section>
+  <div class="main">
+    <header>
+      <TitleBar title="单词" parent-name="home">
+        <strong @click="clickPlus">+</strong>
+      </TitleBar>
+    </header>
+  </div>
 </template>
 
 <script>
+import { getListWordByForget, delWordById } from "../../services/db";
+import TitleBar from "../TitleBar";
+
+let x, li, offset;
 export default {
-  props: {
-    list: Array,
-    basePath: String
+  data() {
+    return {
+      list: []
+    };
+  },
+  components: {
+    TitleBar,
+  },
+  async created() {
+    let list = await getListWordByForget();
+    this.list = list.reverse();
   },
   methods: {
-    detail(item) {
-      this.$router.push({ path: `${this.basePath}/${item.id}` });
+    clickPlus() {
+      this.$router.push({ path: `/ChnCharAdd` });
     }
   }
 };
