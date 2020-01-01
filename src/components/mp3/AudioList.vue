@@ -9,7 +9,7 @@
     <section>
       <ul>
         <li
-          v-for="item in list"
+          v-for="item in mp3.list"
           :key="item.id"
           @pointerdown="down($event,item)"
           @pointermove="move($event,item)"
@@ -27,21 +27,24 @@
 </template>
 
 <script>
-import { getListMp3, delMp3ById, addMp3 } from "../services/db";
-import TitleBar from "./TitleBar";
+import { Mp3, delMp3ById, addMp3 } from "./mp3";
+import TitleBar from "../TitleBar";
 
-let x, li, offset;
+let x,
+  li,
+  offset,
+  mp3 = new Mp3();
 export default {
   data() {
     return {
-      list: []
+      mp3
     };
   },
   components: {
     TitleBar
   },
-  async created() {
-    this.list = await getListMp3();
+  created() {
+    mp3.getMp3List();
   },
   methods: {
     down(e) {
@@ -62,7 +65,7 @@ export default {
         let rect = li.getBoundingClientRect();
         if (Math.abs(offset) > rect.width / 2) {
           delMp3ById(item.id);
-          this.list = await getListMp3();
+          // this.list = await mp3.getMp3List();
         } else {
           li.setAttribute("style", ``);
         }
@@ -78,9 +81,8 @@ export default {
     },
     async addMp3(e) {
       var files = e.target.files;
-      var file = URL.createObjectURL(files[0]);
       await addMp3(files[0]);
-      this.list = await getListMp3();
+      // this.list = await mp3.getMp3List();
     }
   }
 };

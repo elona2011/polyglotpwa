@@ -37,8 +37,13 @@ export default {
   methods: {
     Add() {
       if (this.newWord) {
-        new ChnChar('words').addWord({ name: this.newWord, forget: 0, remember: 0 });
-        this.$router.push({ name: "ChnCharList" });
+        new ChnChar(this.$router.currentRoute.params.store).addWord({
+          name: this.newWord,
+          forgetNum: 1,
+          totalNum: 1,
+          date: +new Date()
+        });
+        this.$router.go(-1);
       }
     }
   }

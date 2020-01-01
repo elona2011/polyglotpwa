@@ -25,8 +25,9 @@
 <script>
 import { ChnChar } from "./ChnChar";
 import TitleBar from "../TitleBar";
+import { storeName_cnWords } from "../../services/db";
 
-let chnChar = new ChnChar()
+let cnWords = new ChnChar('cnWords')
 export default {
   data() {
     return {
@@ -37,15 +38,15 @@ export default {
     TitleBar
   },
   async created() {
-    this.list = await chnChar.getList();
+    this.list = await cnWords.getList();
   },
   methods: {
     clickPlus() {
-      this.$router.push({ path: `/ChnCharAdd` });
+      this.$router.push({ path: `/ChnAdd/${storeName_cnWords}` });
     },
     detail(item) {
-      chnChar.setCurrent(item)
-      this.$router.push({ path: `/ChnCharDetail` });
+      cnWords.setCurrent(item)
+      this.$router.push({ path: `/CnWordsDetail` });
     }
   }
 };

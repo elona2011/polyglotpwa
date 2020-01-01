@@ -56,10 +56,10 @@
 </template>
 
 <script>
-import { playNewMp3, mp3 } from "../services/mp3";
-import { getMp3ById } from "../services/db";
-import TitleBar from "./TitleBar";
+import { Mp3 } from "./mp3";
+import TitleBar from "../TitleBar";
 
+let mp3 = new Mp3()
 export default {
   data() {
     return {
@@ -72,9 +72,7 @@ export default {
     TitleBar
   },
   async created() {
-    let file = await getMp3ById(+this.$route.params.id);
-    mp3.init(file)
-    playNewMp3(file);
+    mp3.playMp3ById(+this.$route.params.id)
   },
   computed: {
     currentTime() {

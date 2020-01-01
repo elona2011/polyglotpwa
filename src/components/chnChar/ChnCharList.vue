@@ -24,6 +24,7 @@
 
 <script>
 import { ChnChar } from "./ChnChar";
+import { storeName_words } from "../../services/db";
 import TitleBar from "../TitleBar";
 
 let chnChar = new ChnChar('words')
@@ -41,7 +42,7 @@ export default {
   },
   methods: {
     clickPlus() {
-      this.$router.push({ path: `/ChnCharAdd` });
+      this.$router.push({ path: `/ChnAdd/${storeName_words}` });
     },
     detail(item) {
       chnChar.setCurrent(item)

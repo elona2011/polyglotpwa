@@ -40,7 +40,7 @@ export default {
       this.$router.push({ name: `ChnCharList` });
     },
     cnWord(){
-      this.$router.push({ name: `ListCnWords` });
+      this.$router.push({ name: `CnWordsList` });
     },
     engWord() {
       this.$router.push({ name: `EngWordList` });

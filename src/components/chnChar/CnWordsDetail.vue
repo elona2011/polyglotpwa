@@ -14,7 +14,10 @@
           @pointerup="up"
           :style="{transform:'translateX('+offset+'px)'}"
         >
-          <span class="name" :style="{fontSize}">{{word.name}}</span>
+          <span
+            class="name"
+            :style="{fontSize}"
+          >{{word.name}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">total:</span>
@@ -28,8 +31,14 @@
     </section>
     <section class="play-group">
       <div>
-        <button class="remember" @click="remember">Remember</button>
-        <button class="forget" @click="forget">Forget</button>
+        <button
+          class="remember"
+          @click="remember"
+        >Remember</button>
+        <button
+          class="forget"
+          @click="forget"
+        >Forget</button>
       </div>
     </section>
   </div>
@@ -39,7 +48,7 @@
 import { ChnChar } from "./ChnChar";
 import TitleBar from "../TitleBar";
 
-let c = new ChnChar("words"),
+let c = new ChnChar('cnWords'),
   x;
 export default {
   data() {
@@ -63,14 +72,14 @@ export default {
   },
   methods: {
     async remember() {
-      ++this.word.totalNum
+      this.word.totalNum++;
       this.word.forgetNum =
         this.word.forgetNum <= 0 ? 0 : --this.word.forgetNum;
       await c.addWord(this.word);
       this.word = c.getNextToCurrent();
     },
     async forget() {
-      ++this.word.totalNum
+      this.word.totalNum++;
       ++this.word.forgetNum
       await c.addWord(this.word);
       this.word = c.getNextToCurrent();
@@ -95,6 +104,7 @@ export default {
     async del() {
       if (confirm("Delete?")) {
         this.word = await c.delWord();
+        debugger
       }
     }
   }

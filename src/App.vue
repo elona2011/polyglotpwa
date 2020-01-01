@@ -22,15 +22,15 @@
 </template>
 
 <script>
-import { continuePauseOrPlayFirst, mp3 } from "./services/mp3";
+import { Mp3 } from "./components/mp3/mp3";
 
+let mp3 = new Mp3();
 export default {
   data() {
     return {
       mp3
     };
   },
-  created() {},
   methods: {
     homeClick() {
       this.$router.push({ name: "home" });
@@ -39,12 +39,12 @@ export default {
       this.$router.push({ name: "listen" });
     },
     PlayClick() {
-      continuePauseOrPlayFirst();
+      mp3.continuePauseOrPlayFirst();
     }
   },
   computed: {
     isPlay() {
-      return mp3.isPlay;
+      return this.mp3.isPlay;
     }
   }
 };

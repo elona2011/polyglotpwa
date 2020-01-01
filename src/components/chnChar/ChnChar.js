@@ -37,7 +37,10 @@ export class ChnChar {
   async delWord() {
     let id = this.curItem.id
     let item = this.getNext()
-    if (item == this.curItem) item = this.getPrev()
+    if (!item) item = this.getPrev()
+    if (!item) item = {}
+    this.setCurrent(item)
+
     let db = await dbPromise
     const tx = db.transaction(this.storeName, 'readwrite')
     const store = await tx.objectStore(this.storeName)
@@ -49,7 +52,7 @@ export class ChnChar {
   }
 
   setCurrent(item) {
-    this.curItem = item
+    return this.curItem = item && item.id ? item : this.curItem
   }
   async getCurrent() {
     if (this.curItem) return this.curItem
@@ -62,21 +65,26 @@ export class ChnChar {
     let db = await dbPromise
     let tx = db.transaction(this.storeName)
     let store = tx.objectStore(this.storeName)
-    let indexForget = store.index('forget')
+    let indexForget = store.index('forgetNum')
     let keyRangeValue = IDBKeyRange.lowerBound(0)
     return await indexForget.openCursor(keyRangeValue, direction)
   }
-
+  getNextToCurrent() {
+    let item = this.getNext()
+    return this.setCurrent(item)
+  }
+  getPrevToCurrent() {
+    let item = this.getPrev()
+    return this.setCurrent(item)
+  }
   getNext() {
     let i = this.list.findIndex(n => n.id === this.curItem.id)
     let r = this.list[i + 1]
-    this.curItem = r ? r : this.curItem
-    return this.curItem
+    return r
   }
   getPrev() {
     let i = this.list.findIndex(n => n.id === this.curItem.id)
     let r = this.list[i - 1]
-    this.curItem = r ? r : this.curItem
-    return this.curItem = r ? r : this.curItem
+    return r
   }
 }
