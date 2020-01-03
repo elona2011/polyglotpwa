@@ -14,7 +14,10 @@
           @pointerup="up"
           :style="{transform:'translateX('+offset+'px)'}"
         >
-          <span class="name" :style="{fontSize}">{{word.name}}</span>
+          <span
+            class="name"
+            :style="{fontSize,color}"
+          >{{word.name}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">total:</span>
@@ -28,8 +31,14 @@
     </section>
     <section class="play-group">
       <div>
-        <button class="remember" @click="remember">Remember</button>
-        <button class="forget" @click="forget">Forget</button>
+        <button
+          class="remember"
+          @click="remember"
+        >Remember</button>
+        <button
+          class="forget"
+          @click="forget"
+        >Forget</button>
       </div>
     </section>
   </div>
@@ -38,6 +47,7 @@
 <script>
 import { ChnChar } from "./ChnChar";
 import TitleBar from "../TitleBar";
+import { getColor } from "../../services/color";
 
 let c = new ChnChar("words"),
   x;
@@ -45,7 +55,9 @@ export default {
   data() {
     return {
       word: {},
-      offset: 0
+      offset: 0,
+      color: getColor(),
+      fontSize: "40vw"
     };
   },
   components: {
@@ -54,24 +66,17 @@ export default {
   async created() {
     this.word = await c.getCurrent();
   },
-  computed: {
-    fontSize() {
-      return this.word.name
-        ? (80 / this.word.name.length).toFixed(0) + "vw"
-        : "10vw";
-    }
-  },
   methods: {
     async remember() {
-      ++this.word.totalNum
+      ++this.word.totalNum;
       this.word.forgetNum =
         this.word.forgetNum <= 0 ? 0 : --this.word.forgetNum;
       await c.addWord(this.word);
       this.word = c.getNextToCurrent();
     },
     async forget() {
-      ++this.word.totalNum
-      ++this.word.forgetNum
+      ++this.word.totalNum;
+      ++this.word.forgetNum;
       await c.addWord(this.word);
       this.word = c.getNextToCurrent();
     },
@@ -82,11 +87,15 @@ export default {
       this.offset = e.x - x;
     },
     up() {
-      if (this.offset < -50) {
+      if (this.offset < -50 && c.getNext()) {
         this.word = c.getNextToCurrent();
+        this.fontSize = 15 + Math.floor(Math.random() * 60) + "vw";
+        this.color = getColor()
         this.offset = 0;
-      } else if (this.offset > 50) {
+      } else if (this.offset > 50 && c.getPrev()) {
         this.word = c.getPrevToCurrent();
+        this.fontSize = 15 + Math.floor(Math.random() * 60) + "vw";
+        this.color = getColor()
         this.offset = 0;
       } else {
         this.offset = 0;

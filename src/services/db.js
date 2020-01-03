@@ -7,6 +7,14 @@ export const storeName_words = 'words'
 export const storeName_cnWords = 'cnWords'
 export const version = 4
 
+export const dbSetConfig = config => {
+  config.id = 1
+  addValue(storeName_config, config)
+}
+export const dbGetConfig = async () => {
+  let config = await getById(storeName_config, 1)
+  return config
+}
 export const addWord = word => addValue(storeName_words, word)
 export const addMp3 = async mp3 => await addValue(storeName_mp3, mp3)
 export const delMp3ById = async id => await delById(storeName_mp3, id)
@@ -31,70 +39,68 @@ export let dbPromise = openMyDB()
 function openMyDB() {
   return openDB(dbName, version, {
     async upgrade(db, oldVer, newVer, transaction) {
-      switch (oldVer) {
-        case 0:
-          {
-            db.createObjectStore(storeName_config, { keyPath: 'id', autoIncrement: true })
-            db.createObjectStore(storeName_mp3, { keyPath: 'id', autoIncrement: true })
-            db.createObjectStore(storeName_words, { keyPath: 'id', autoIncrement: true })
-            db.createObjectStore(storeName_cnWords, { keyPath: 'id', autoIncrement: true })
+      if (oldVer == 0 && newVer == version) {
+        db.createObjectStore(storeName_config, { keyPath: 'id', autoIncrement: true })
+        db.createObjectStore(storeName_mp3, { keyPath: 'id', autoIncrement: true })
+        db.createObjectStore(storeName_words, { keyPath: 'id', autoIncrement: true })
+        db.createObjectStore(storeName_cnWords, { keyPath: 'id', autoIncrement: true })
 
-            transaction.objectStore(storeName_words).createIndex("forgetNum", "forgetNum", { unique: false })
-            transaction.objectStore(storeName_cnWords).createIndex("forgetNum", "forgetNum", { unique: false })
-          }
-          break
-        case 1:
-          {
+        transaction.objectStore(storeName_words).createIndex("forgetNum", "forgetNum", { unique: false })
+        transaction.objectStore(storeName_cnWords).createIndex("forgetNum", "forgetNum", { unique: false })
+      } else {
+        switch (newVer) {
+          case 1:
+            {
+              let store = transaction.objectStore(storeName_words)
+              let keyRangeValue = IDBKeyRange.lowerBound(0)
+              let cursor = await store.openCursor(keyRangeValue)
+              while (cursor) {
+                let item = cursor.value
 
-            let store = transaction.objectStore(storeName_words)
-            let keyRangeValue = IDBKeyRange.lowerBound(0)
-            let cursor = await store.openCursor(keyRangeValue)
-            while (cursor) {
-              let item = cursor.value
+                item.totalNum = item.forget + item.remember
+                item.forgetNum = item.forget
 
-              item.totalNum = item.forget + item.remember
-              item.forgetNum = item.forget
-
-              cursor.update(item)
-              cursor = await cursor.continue();
-            }
-            transaction.objectStore(storeName_words).createIndex("forgetNum", "forgetNum", { unique: false })
-            transaction.objectStore(storeName_words).deleteIndex('forget')
-            transaction.objectStore(storeName_words).deleteIndex('remember')
-
-            db.createObjectStore(storeName_cnWords, { keyPath: 'id', autoIncrement: true })
-            transaction.objectStore(storeName_cnWords).createIndex("forgetNum", "forgetNum", { unique: false })
-            let list = await transaction.objectStore(storeName_words).getAll()
-            list.forEach(async n => {
-              if (n.name.length > 1) {
-                // const tx = db.transaction(storeName_cnWords, 'readwrite')
-                const store = transaction.objectStore(storeName_cnWords)
-                await store.put(n)
+                cursor.update(item)
+                cursor = await cursor.continue();
               }
-            })
-          }
-          break
+              transaction.objectStore(storeName_words).createIndex("forgetNum", "forgetNum", { unique: false })
+              transaction.objectStore(storeName_words).deleteIndex('forget')
+              transaction.objectStore(storeName_words).deleteIndex('remember')
 
-        case 3:
-          {
-            let store = transaction.objectStore(storeName_words)
-            let keyRangeValue = IDBKeyRange.lowerBound(0)
-            let cursor = await store.openCursor(keyRangeValue)
-            while (cursor) {
-              let item = cursor.value
-
-              if (item.name.length > 1) cursor.delete()
-
-              cursor = await cursor.continue();
+              db.createObjectStore(storeName_cnWords, { keyPath: 'id', autoIncrement: true })
+              transaction.objectStore(storeName_cnWords).createIndex("forgetNum", "forgetNum", { unique: false })
+              let list = await transaction.objectStore(storeName_words).getAll()
+              list.forEach(async n => {
+                if (n.name.length > 1) {
+                  // const tx = db.transaction(storeName_cnWords, 'readwrite')
+                  const store = transaction.objectStore(storeName_cnWords)
+                  await store.put(n)
+                }
+              })
             }
-          }
-          break
+            break
 
-        case 4:
-          {
-            db.createObjectStore(storeName_config, { keyPath: 'id', autoIncrement: true })
-          }
-          break
+          case 3:
+            {
+              let store = transaction.objectStore(storeName_words)
+              let keyRangeValue = IDBKeyRange.lowerBound(0)
+              let cursor = await store.openCursor(keyRangeValue)
+              while (cursor) {
+                let item = cursor.value
+
+                if (item.name.length > 1) cursor.delete()
+
+                cursor = await cursor.continue();
+              }
+            }
+            break
+
+          case 4:
+            {
+              db.createObjectStore(storeName_config, { keyPath: 'id', autoIncrement: true })
+            }
+            break
+        }
       }
     }
   })

@@ -1,4 +1,4 @@
-import { getListMp3, delMp3ById, addMp3, getMp3ById } from "../../services/db";
+import { getListMp3, delMp3ById, addMp3, getMp3ById, dbSetConfig, dbGetConfig } from "../../services/db";
 
 export class Mp3 {
   constructor() {
@@ -9,6 +9,7 @@ export class Mp3 {
     this.isInit = false
     this.isPlay = false
     this.name = ''
+    this.index = 0
     this.playbackRate = 1
     this.currentTime = 0
     this.duration = 0
@@ -16,6 +17,10 @@ export class Mp3 {
     this.list = [];
     (async () => {
       this.getMp3List()
+      let config = await dbGetConfig()
+      if (config) {
+        Mp3.instance = Object.assign(this, config)
+      }
     })()
   }
 
@@ -26,15 +31,22 @@ export class Mp3 {
       this.name = file.name
       this.audio = this.audio ? this.audio : new Audio()
       this.isPlay = false
-      this.audio.loop = true
+      // this.audio.loop = true
       this.objectURL = URL.createObjectURL(file)
       this.audio.src = this.objectURL
+      this.audio.playbackRate = this.playbackRate
       this.audio.addEventListener("loadedmetadata", () => {
         this.duration = this.audio.duration;
+        dbSetConfig(this.config)
       });
       this.audio.addEventListener("timeupdate", () => {
         this.currentTime = this.audio.currentTime
+        dbSetConfig(this.config)
       });
+      this.audio.addEventListener("ended", () => {
+        this.playNext()
+      });
+      dbSetConfig(this.config)
     }
   }
 
@@ -47,10 +59,14 @@ export class Mp3 {
     if (this.audio) {
       this.audio.playbackRate = this.playbackRate = t
     }
+    dbSetConfig(this.config)
   }
   play() {
     this.audio.play()
     this.isPlay = true
+  }
+  playNext() {
+    this.playMp3ByIndex(this.index >= this.list.length - 1 ? 0 : ++this.index)
   }
   pause() {
     this.audio.pause()
@@ -80,9 +96,8 @@ export class Mp3 {
     }
   }
 
-  async playMp3ById(id) {
-    let file = await getMp3ById(id);
-    this.playNewMp3(file);
+  playMp3ByIndex(i) {
+    this.playNewMp3(this.list[i]);
   }
 
   playPauseMp3(file) {
@@ -101,10 +116,20 @@ export class Mp3 {
     this.playPauseMp3(file)
     return this.isPlay
   }
-  async playNewMp3(file) {
+  playNewMp3(file) {
     if (file) {
       this.init(file)
       this.play()
+    }
+  }
+
+  get config() {
+    return {
+      playbackRate: this.playbackRate,
+      currentTime: this.currentTime,
+      duration: this.duration,
+      file: this.file,
+      index: this.index
     }
   }
 }

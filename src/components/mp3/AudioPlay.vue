@@ -72,7 +72,7 @@ export default {
     TitleBar
   },
   async created() {
-    mp3.playMp3ById(+this.$route.params.id)
+    mp3.playMp3ByIndex(+this.$route.params.index)
   },
   computed: {
     currentTime() {

@@ -7,13 +7,17 @@
       <nav>
         <ul>
           <li @click="homeClick">
-            <span>Home</span>
+            <span class="middle">Home</span>
           </li>
           <li @click="ListenClick">
-            <span>Listen</span>
+            <span class="middle">Listen</span>
           </li>
-          <li @click="PlayClick">
-            <span :class="{'icon-play':!isPlay,'icon-pause':isPlay}"></span>
+          <li class="play">
+            <span
+              :class="{'icon-play':!isPlay,'icon-pause':isPlay,'play-icon':true}"
+              @click="PlayClick"
+            ></span>
+            <span class="icon-loop play-icon" @click="setLoop"></span>
           </li>
         </ul>
       </nav>
@@ -40,6 +44,9 @@ export default {
     },
     PlayClick() {
       mp3.continuePauseOrPlayFirst();
+    },
+    setLoop(){
+      
     }
   },
   computed: {
@@ -78,6 +85,9 @@ export default {
 }
 .icon-pause:before {
   content: "\ea1d";
+}
+.icon-loop:before {
+  content: "\ea2e";
 }
 * {
   margin: 0;
@@ -122,11 +132,21 @@ footer ul li {
   flex: 1;
   position: relative;
 }
-footer ul li span {
+footer ul li .middle {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   user-select: none;
+}
+.play {
+  display: flex;
+  justify-content: center;
+}
+.play .play-icon {
+  flex: 1;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 </style>

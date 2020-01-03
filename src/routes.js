@@ -21,7 +21,7 @@ export default [
     component: AudioList
   }, {
     name: 'play',
-    path: '/play/:id',
+    path: '/play/:index',
     component: AudioPlay
   }, {
     name: 'ChnCharList',

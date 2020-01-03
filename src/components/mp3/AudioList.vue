@@ -9,12 +9,12 @@
     <section>
       <ul>
         <li
-          v-for="item in mp3.list"
+          v-for="(item,index) in mp3.list"
           :key="item.id"
           @pointerdown="down($event,item)"
           @pointermove="move($event,item)"
           @pointerup="up($event,item)"
-          @click="play(item)"
+          @click="play(index)"
         >
           <div>
             <span>{{item.name}}</span>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { Mp3, delMp3ById, addMp3 } from "./mp3";
+import { Mp3 } from "./mp3";
 import TitleBar from "../TitleBar";
 
 let x,
@@ -60,11 +60,11 @@ export default {
         li.setAttribute("style", `transform:translate(${offset}px);`);
       }
     },
-    async up(e, item) {
+    up(e, item) {
       if (li) {
         let rect = li.getBoundingClientRect();
         if (Math.abs(offset) > rect.width / 2) {
-          delMp3ById(item.id);
+          mp3.delMp3ById(item.id);
           // this.list = await mp3.getMp3List();
         } else {
           li.setAttribute("style", ``);
@@ -72,16 +72,16 @@ export default {
         // li.releasePointerCapture(e.pointerId);
       }
     },
-    play(item) {
-      this.$router.push({ path: `/play/${item.id}` });
+    play(item,i) {
+      this.$router.push({ path: `/play/${i}` });
     },
     clickPlus() {
       let audio_file = document.querySelector("#audio_file");
       audio_file.click();
     },
-    async addMp3(e) {
+    addMp3(e) {
       var files = e.target.files;
-      await addMp3(files[0]);
+      mp3.addMp3(files[0]);
       // this.list = await mp3.getMp3List();
     }
   }
