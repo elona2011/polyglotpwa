@@ -14,31 +14,22 @@
           @pointerup="up"
           :style="{transform:'translateX('+offset+'px)'}"
         >
-          <span
-            class="name"
-            :style="{fontSize}"
-          >{{word.name}}</span>
+          <span class="name" :style="{fontSize}">{{word?word.name:''}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">total:</span>
-          <span class="name">{{word.totalNum}}</span>
+          <span class="name">{{word?word.totalNum:''}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">forget:</span>
-          <span class="name">{{word.forgetNum}}</span>
+          <span class="name">{{word?word.forgetNum:''}}</span>
         </div>
       </div>
     </section>
     <section class="play-group">
       <div>
-        <button
-          class="remember"
-          @click="remember"
-        >Remember</button>
-        <button
-          class="forget"
-          @click="forget"
-        >Forget</button>
+        <button class="remember" @click="remember">Remember</button>
+        <button class="forget" @click="forget">Forget</button>
       </div>
     </section>
   </div>
@@ -54,36 +45,33 @@ let c = new Word(storeName_enDadWords),
 export default {
   data() {
     return {
-      word: {},
+      word: c,
       offset: 0
     };
   },
   components: {
     TitleBar
   },
-  async created() {
-    this.word = await c.getCurrent();
-  },
   computed: {
     fontSize() {
-      return this.word.name
+      return this.word && this.word.name
         ? (80 / this.word.name.length).toFixed(0) + "vw"
         : "10vw";
     }
   },
   methods: {
-    async remember() {
+    remember() {
       this.word.totalNum++;
       this.word.forgetNum =
         this.word.forgetNum <= 0 ? 0 : --this.word.forgetNum;
-      await c.addWord(this.word);
-      this.word = c.getNextToCurrent();
+      c.pushCurItem();
+      c.getNextToCurrent();
     },
-    async forget() {
+    forget() {
       this.word.totalNum++;
-      ++this.word.forgetNum
-      await c.addWord(this.word);
-      this.word = c.getNextToCurrent();
+      ++this.word.forgetNum;
+      c.pushCurItem();
+      c.getNextToCurrent();
     },
     down(e) {
       x = e.x;
@@ -93,10 +81,10 @@ export default {
     },
     up() {
       if (this.offset < -50) {
-        this.word = c.getNextToCurrent();
+        c.getNextToCurrent();
         this.offset = 0;
       } else if (this.offset > 50) {
-        this.word = c.getPrevToCurrent();
+        c.getPrevToCurrent();
         this.offset = 0;
       } else {
         this.offset = 0;

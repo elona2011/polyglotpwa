@@ -39,11 +39,11 @@ export default {
   },
   methods: {
     clickPlus() {
-      this.$router.push({ path: `/EngWordAdd/${storeName_enDadWords}` });
+      this.$router.push({ path: `/EngDadAdd/${storeName_enDadWords}` });
     },
     detail(item) {
       cnWords.setCurrent(item)
-      this.$router.push({ path: `/EngWordDetail` });
+      this.$router.push({ path: `/EngDadDetail` });
     }
   }
 };
