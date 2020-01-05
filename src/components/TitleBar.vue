@@ -63,7 +63,7 @@ div span {
   flex-direction: column;
 }
 div p {
-  flex: 8;
+  flex: 6;
   display: flex;
   justify-content: center;
   flex-direction: column;

@@ -60,6 +60,7 @@ import { Mp3 } from "./mp3";
 import TitleBar from "../TitleBar";
 
 let mp3 = new Mp3()
+
 export default {
   data() {
     return {

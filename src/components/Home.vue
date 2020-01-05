@@ -12,7 +12,7 @@
       <div>6</div>
       <div>7</div>
       <div>8</div>
-      <div>9</div>
+      <div @click="eng">爸爸英语</div>
     </section>
   </div>
 </template>
@@ -39,11 +39,14 @@ export default {
     chineseChar() {
       this.$router.push({ name: `ChnCharList` });
     },
-    cnWord(){
+    cnWord() {
       this.$router.push({ name: `CnWordsList` });
     },
     engWord() {
       this.$router.push({ name: `EngWordList` });
+    },
+    eng() {
+      this.$router.push({ name: `EngDadList` });
     }
   }
 };
@@ -66,7 +69,7 @@ div.main header {
 section {
   display: inline-grid;
   grid-template-columns: 33.3vw 33.3vw 33.3vw;
-  grid-template-rows: 33.3vw 33.3vw 33.3vw;
+  grid-auto-rows: 33.3vw;
 }
 section div {
   display: flex;

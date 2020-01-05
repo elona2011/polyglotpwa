@@ -5,7 +5,9 @@ export const storeName_config = 'config'
 export const storeName_mp3 = 'mp3'
 export const storeName_words = 'words'
 export const storeName_cnWords = 'cnWords'
-export const version = 4
+export const storeName_enWords = 'enWords'
+export const storeName_enDadWords = 'enDadWords'
+export const version = 6
 
 export const dbSetConfig = config => {
   config.id = 1
@@ -44,9 +46,13 @@ function openMyDB() {
         db.createObjectStore(storeName_mp3, { keyPath: 'id', autoIncrement: true })
         db.createObjectStore(storeName_words, { keyPath: 'id', autoIncrement: true })
         db.createObjectStore(storeName_cnWords, { keyPath: 'id', autoIncrement: true })
+        db.createObjectStore(storeName_enWords, { keyPath: 'id', autoIncrement: true })
+        db.createObjectStore(storeName_enDadWords, { keyPath: 'id', autoIncrement: true })
 
         transaction.objectStore(storeName_words).createIndex("forgetNum", "forgetNum", { unique: false })
         transaction.objectStore(storeName_cnWords).createIndex("forgetNum", "forgetNum", { unique: false })
+        transaction.objectStore(storeName_enWords).createIndex("forgetNum", "forgetNum", { unique: false })
+        transaction.objectStore(storeName_enDadWords).createIndex("forgetNum", "forgetNum", { unique: false })
       } else {
         switch (newVer) {
           case 1:
@@ -95,9 +101,17 @@ function openMyDB() {
             }
             break
 
-          case 4:
+          case 5:
             {
               db.createObjectStore(storeName_config, { keyPath: 'id', autoIncrement: true })
+              db.createObjectStore(storeName_enWords, { keyPath: 'id', autoIncrement: true })
+              transaction.objectStore(storeName_enWords).createIndex("forgetNum", "forgetNum", { unique: false })
+            }
+            break
+          case 6:
+            {
+              db.createObjectStore(storeName_enDadWords, { keyPath: 'id', autoIncrement: true })
+              transaction.objectStore(storeName_enDadWords).createIndex("forgetNum", "forgetNum", { unique: false })
             }
             break
         }

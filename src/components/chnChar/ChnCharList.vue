@@ -1,20 +1,13 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar
-        title="识字"
-        parent-name="home"
-      >
+      <TitleBar title="识字" parent-name="home">
         <strong @click="clickPlus">+</strong>
       </TitleBar>
     </header>
     <section>
       <ul>
-        <li
-          v-for="item in list"
-          :key="item.id"
-          @click="detail(item)"
-        >
+        <li v-for="item in list" :key="item.id" @click="detail(item)">
           <span>{{item.name}}</span>
         </li>
       </ul>
@@ -23,11 +16,11 @@
 </template>
 
 <script>
-import { ChnChar } from "./ChnChar";
+import Word from "../../services/Word";
 import { storeName_words } from "../../services/db";
 import TitleBar from "../TitleBar";
 
-let chnChar = new ChnChar('words')
+let chnChar = new Word("words");
 export default {
   data() {
     return {
@@ -45,7 +38,7 @@ export default {
       this.$router.push({ path: `/ChnAdd/${storeName_words}` });
     },
     detail(item) {
-      chnChar.setCurrent(item)
+      chnChar.setCurrent(item);
       this.$router.push({ path: `/ChnCharDetail` });
     }
   }
@@ -66,15 +59,16 @@ div.main header {
   justify-content: center;
   background-color: #eee;
 }
-li {
+ul {
+  display: inline-grid;
+  grid-template-columns: repeat(5, 20vw);
+  grid-auto-rows: 20vw;
+}
+ul li {
   background-color: bisque;
-  margin: 3px 2px;
-  padding: 2px 8px;
-  position: relative;
-  touch-action: pan-y;
-  display: inline-block;
-  height: 7vh;
-  line-height: 7vh;
-  float: left;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 1px;
 }
 </style>

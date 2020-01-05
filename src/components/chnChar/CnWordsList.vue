@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import { ChnChar } from "./ChnChar";
+import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
 import { storeName_cnWords } from "../../services/db";
 
-let cnWords = new ChnChar('cnWords')
+let cnWords = new Word('cnWords')
 export default {
   data() {
     return {

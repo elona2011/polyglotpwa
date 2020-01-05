@@ -1,48 +1,68 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="New Word" />
+      <TitleBar title="New Word">
+        <strong @click="del">-</strong>
+      </TitleBar>
     </header>
     <section class="setup-group">
       <div class="group-item">
-        <div class="word">
-          <span class="name" :style="{fontSize}">{{word.name}}</span>
+        <div
+          class="word"
+          @pointerdown="down"
+          @pointermove="move"
+          @pointerup="up"
+          :style="{transform:'translateX('+offset+'px)'}"
+        >
+          <span
+            class="name"
+            :style="{fontSize}"
+          >{{word.name}}</span>
         </div>
         <div class="name-value-reset">
-          <span class="name">remember:</span>
-          <span class="name">{{word.remember}}</span>
+          <span class="name">total:</span>
+          <span class="name">{{word.totalNum}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">forget:</span>
-          <span class="name">{{word.forget}}</span>
+          <span class="name">{{word.forgetNum}}</span>
         </div>
       </div>
     </section>
     <section class="play-group">
       <div>
-        <button class="remember" @click="remember">Remember</button>
-        <button class="forget" @click="forget">Forget</button>
+        <button
+          class="remember"
+          @click="remember"
+        >Remember</button>
+        <button
+          class="forget"
+          @click="forget"
+        >Forget</button>
       </div>
     </section>
   </div>
 </template>
 
 <script>
-import { getWordById, addWord } from "../../services/db";
+import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
+import { storeName_enWords } from "../../services/db";
 
+let c = new Word(storeName_enWords),
+  x;
 export default {
   data() {
     return {
-      word: {}
+      word: {},
+      offset: 0
     };
   },
   components: {
     TitleBar
   },
   async created() {
-    let word = await getWordById(+this.$route.params.id);
-    this.word = word;
+    this.word = await c.getCurrent();
   },
   computed: {
     fontSize() {
@@ -53,14 +73,39 @@ export default {
   },
   methods: {
     async remember() {
-      this.word.remember++;
-      await addWord(this.word);
-      this.$router.push({ path: "/words" });
+      this.word.totalNum++;
+      this.word.forgetNum =
+        this.word.forgetNum <= 0 ? 0 : --this.word.forgetNum;
+      await c.addWord(this.word);
+      this.word = c.getNextToCurrent();
     },
     async forget() {
-      this.word.forget++;
-      await addWord(this.word);
-      this.$router.push({ path: "/words" });
+      this.word.totalNum++;
+      ++this.word.forgetNum
+      await c.addWord(this.word);
+      this.word = c.getNextToCurrent();
+    },
+    down(e) {
+      x = e.x;
+    },
+    move(e) {
+      this.offset = e.x - x;
+    },
+    up() {
+      if (this.offset < -50) {
+        this.word = c.getNextToCurrent();
+        this.offset = 0;
+      } else if (this.offset > 50) {
+        this.word = c.getPrevToCurrent();
+        this.offset = 0;
+      } else {
+        this.offset = 0;
+      }
+    },
+    async del() {
+      if (confirm("Delete?")) {
+        this.word = await c.delWord();
+      }
     }
   }
 };
@@ -98,6 +143,7 @@ div section.play-group {
 .word {
   flex: 1;
   position: relative;
+  touch-action: pan-y;
 }
 .word .name {
   position: absolute;

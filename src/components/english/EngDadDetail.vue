@@ -47,8 +47,9 @@
 <script>
 import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
+import { storeName_enDadWords } from "../../services/db";
 
-let c = new Word('cnWords'),
+let c = new Word(storeName_enDadWords),
   x;
 export default {
   data() {
@@ -104,7 +105,6 @@ export default {
     async del() {
       if (confirm("Delete?")) {
         this.word = await c.delWord();
-        debugger
       }
     }
   }

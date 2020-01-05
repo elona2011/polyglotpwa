@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { addWord } from "../../services/db";
+import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
 
 export default {
@@ -35,10 +35,10 @@ export default {
   async created() {},
   computed: {},
   methods: {
-    async Add() {
+    Add() {
       if (this.newWord) {
-        await addWord({ name: this.newWord, forget: 0, remember: 0 });
-        this.$router.push({ name: "ChnCharList" });
+        new Word(this.$route.params.store).addWord(this.newWord);
+        this.$router.go(-1);
       }
     }
   }

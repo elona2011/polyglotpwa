@@ -4,6 +4,9 @@ import AudioPlay from "./components/mp3/AudioPlay.vue";
 import EngWordList from "./components/english/EngWordList.vue";
 import EngWordAdd from "./components/english/EngWordAdd.vue";
 import EngWordDetail from "./components/english/EngWordDetail.vue";
+import EngDadList from "./components/english/EngDadList.vue";
+import EngDadAdd from "./components/english/EngDadAdd.vue";
+import EngDadDetail from "./components/english/EngDadDetail.vue";
 import ChnCharList from "./components/chnChar/ChnCharList.vue";
 import ChnAdd from "./components/chnChar/ChnAdd.vue";
 import ChnCharDetail from "./components/chnChar/ChnCharDetail.vue";
@@ -48,10 +51,21 @@ export default [
     component: EngWordList
   }, {
     name: 'EngWordAdd',
-    path: '/EngWordAdd',
+    path: '/EngWordAdd/:store',
     component: EngWordAdd
   }, {
-    path: '/EngWordDetail/:id',
+    path: '/EngWordDetail',
     component: EngWordDetail
+  }, {
+    name: 'EngDadList',
+    path: '/EngDadList',
+    component: EngDadList
+  }, {
+    name: 'EngDadAdd',
+    path: '/EngDadAdd/:store',
+    component: EngDadAdd
+  }, {
+    path: '/EngDadDetail',
+    component: EngDadDetail
   }
 ]

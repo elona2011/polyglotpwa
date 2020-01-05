@@ -17,7 +17,7 @@
               :class="{'icon-play':!isPlay,'icon-pause':isPlay,'play-icon':true}"
               @click="PlayClick"
             ></span>
-            <span class="icon-loop play-icon" @click="setLoop"></span>
+            <span class="icon-loop play-icon" @click="setLoop" :style="{color:isAllLoop}"></span>
           </li>
         </ul>
       </nav>
@@ -45,13 +45,16 @@ export default {
     PlayClick() {
       mp3.continuePauseOrPlayFirst();
     },
-    setLoop(){
-      
+    setLoop() {
+      mp3.setAllLoop()
     }
   },
   computed: {
     isPlay() {
       return this.mp3.isPlay;
+    },
+    isAllLoop() {
+      return this.mp3.isAllLoop ? "green" : "grey";
     }
   }
 };

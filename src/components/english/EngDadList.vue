@@ -22,9 +22,9 @@
 <script>
 import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
-import { storeName_enWords } from "../../services/db";
+import { storeName_enDadWords } from "../../services/db";
 
-let cnWords = new Word(storeName_enWords)
+let cnWords = new Word(storeName_enDadWords)
 export default {
   data() {
     return {
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     clickPlus() {
-      this.$router.push({ path: `/EngWordAdd/${storeName_enWords}` });
+      this.$router.push({ path: `/EngWordAdd/${storeName_enDadWords}` });
     },
     detail(item) {
       cnWords.setCurrent(item)

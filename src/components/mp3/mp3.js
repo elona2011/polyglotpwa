@@ -13,6 +13,7 @@ export class Mp3 {
     this.playbackRate = 1
     this.currentTime = 0
     this.duration = 0
+    this.isAllLoop = false
     this.file = {}
     this.list = [];
     (async () => {
@@ -31,7 +32,9 @@ export class Mp3 {
       this.name = file.name
       this.audio = this.audio ? this.audio : new Audio()
       this.isPlay = false
-      // this.audio.loop = true
+      if (!this.isAllLoop) {
+        this.audio.loop = true
+      }
       this.objectURL = URL.createObjectURL(file)
       this.audio.src = this.objectURL
       this.audio.playbackRate = this.playbackRate
@@ -73,6 +76,13 @@ export class Mp3 {
     this.isPlay = false
   }
 
+  setAllLoop() {
+    this.isAllLoop = !this.isAllLoop
+    if (this.audio) {
+      this.audio.loop = this.isAllLoop
+    }
+    dbSetConfig(this.config)
+  }
   async getMp3List() {
     return this.list = await getListMp3()
   }
@@ -128,6 +138,7 @@ export class Mp3 {
       playbackRate: this.playbackRate,
       currentTime: this.currentTime,
       duration: this.duration,
+      isAllLoop: this.isAllLoop,
       file: this.file,
       index: this.index
     }

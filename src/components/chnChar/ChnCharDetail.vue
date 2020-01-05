@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import { ChnChar } from "./ChnChar";
+import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
 import { getColor } from "../../services/color";
 
-let c = new ChnChar("words"),
+let c = new Word("words"),
   x;
 export default {
   data() {
@@ -57,7 +57,7 @@ export default {
       word: {},
       offset: 0,
       color: getColor(),
-      fontSize: "40vw"
+      fontSize: this.getFontSize()
     };
   },
   components: {
@@ -89,17 +89,20 @@ export default {
     up() {
       if (this.offset < -50 && c.getNext()) {
         this.word = c.getNextToCurrent();
-        this.fontSize = 15 + Math.floor(Math.random() * 60) + "vw";
+        this.fontSize = this.getFontSize()
         this.color = getColor()
         this.offset = 0;
       } else if (this.offset > 50 && c.getPrev()) {
         this.word = c.getPrevToCurrent();
-        this.fontSize = 15 + Math.floor(Math.random() * 60) + "vw";
+        this.fontSize = this.getFontSize()
         this.color = getColor()
         this.offset = 0;
       } else {
         this.offset = 0;
       }
+    },
+    getFontSize(){
+      return 15 + Math.floor(Math.random() * 70) + "vw";
     },
     async del() {
       if (confirm("Delete?")) {
