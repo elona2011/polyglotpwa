@@ -62,6 +62,7 @@ export default {
     TitleBar
   },
   async created() {
+    debugger
     this.word = await c.getCurrent();
   },
   computed: {

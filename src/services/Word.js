@@ -3,6 +3,7 @@ import { dbPromise } from "./db";
 // function methods() {
 //   return {
 //     async getList() {
+//       debugger
 //       let cursor = await this.getCursor('prev')
 //       this.list = []
 //       while (cursor) {
@@ -57,6 +58,7 @@ import { dbPromise } from "./db";
 //     },
 //     async getCurrent() {
 //       if (Object.keys(this.curItem).length != 0) return this.curItem
+//       debugger
 //       let list = await this.getList()
 //       console.log(list)
 //       this.curItem = list && list[0] ? list[0] : this.curItem

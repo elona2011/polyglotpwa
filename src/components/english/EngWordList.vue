@@ -35,6 +35,7 @@ export default {
     TitleBar
   },
   async created() {
+    debugger
     this.list = await cnWords.getList();
   },
   methods: {
