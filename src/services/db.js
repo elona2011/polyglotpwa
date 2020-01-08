@@ -26,20 +26,18 @@ export const getWordById = id => getById(storeName_words, id)
 export const getListMp3 = () => getList(storeName_mp3)
 export const getListWord = () => getList(storeName_words)
 export const getListWordByForget = async () => {
-  let db = await dbPromise
+  let db = await openMyDB()
   let index = await db.transaction(storeName_words).objectStore(storeName_words).index('forget')
   return await index.getAll()
 }
 
 export const getStore = async storeName => {
-  let db = await dbPromise
+  let db = await openMyDB()
   return db.transaction(storeName).objectStore(storeName)
 }
 
-export let dbPromise = openMyDB()
-
-function openMyDB() {
-  return openDB(dbName, version, {
+export const openMyDB = async function () {
+  return await openDB(dbName, version, {
     async upgrade(db, oldVer, newVer, transaction) {
       if (oldVer == 0 && newVer == version) {
         db.createObjectStore(storeName_config, { keyPath: 'id', autoIncrement: true })
@@ -121,13 +119,13 @@ function openMyDB() {
 }
 
 const getById = async (storeName, id) => {
-  let db = await dbPromise
+  let db = await openMyDB()
   let item = await db.transaction(storeName).objectStore(storeName).get(id)
   return item
 }
 
 const addValue = async (storeName, val) => {
-  let db = await dbPromise
+  let db = await openMyDB()
   const tx = db.transaction(storeName, 'readwrite')
   const store = await tx.objectStore(storeName)
   await store.put(val)
@@ -135,7 +133,7 @@ const addValue = async (storeName, val) => {
 }
 
 const delById = async (storeName, id) => {
-  let db = await dbPromise
+  let db = await openMyDB()
   const tx = db.transaction(storeName, 'readwrite')
   const store = await tx.objectStore(storeName)
 
@@ -144,7 +142,7 @@ const delById = async (storeName, id) => {
 }
 
 const getList = async (storeName) => {
-  let db = await dbPromise
+  let db = await openMyDB()
   let list = await db.transaction(storeName).objectStore(storeName).getAll()
   return list
 }

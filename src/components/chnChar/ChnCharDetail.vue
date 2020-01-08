@@ -17,15 +17,15 @@
           <span
             class="name"
             :style="{fontSize,color}"
-          >{{word.name}}</span>
+          >{{words.curItem.name}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">total:</span>
-          <span class="name">{{word.totalNum}}</span>
+          <span class="name">{{words.curItem.totalNum}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">forget:</span>
-          <span class="name">{{word.forgetNum}}</span>
+          <span class="name">{{words.curItem.forgetNum}}</span>
         </div>
       </div>
     </section>
@@ -49,12 +49,11 @@ import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
 import { getColor } from "../../services/color";
 
-let c = new Word("words"),
-  x;
+let x;
 export default {
   data() {
     return {
-      word: {},
+      words: new Word("words"),
       offset: 0,
       color: getColor(),
       fontSize: this.getFontSize()
@@ -63,22 +62,12 @@ export default {
   components: {
     TitleBar
   },
-  async created() {
-    this.word = await c.getCurrent();
-  },
   methods: {
-    async remember() {
-      ++this.word.totalNum;
-      this.word.forgetNum =
-        this.word.forgetNum <= 0 ? 0 : --this.word.forgetNum;
-      await c.addWord(this.word);
-      this.word = c.getNextToCurrent();
+    remember() {
+      this.words.remember();
     },
-    async forget() {
-      ++this.word.totalNum;
-      ++this.word.forgetNum;
-      await c.addWord(this.word);
-      this.word = c.getNextToCurrent();
+    forget() {
+      this.words.forget();
     },
     down(e) {
       x = e.x;
@@ -87,26 +76,26 @@ export default {
       this.offset = e.x - x;
     },
     up() {
-      if (this.offset < -50 && c.getNext()) {
-        this.word = c.getNextToCurrent();
-        this.fontSize = this.getFontSize()
-        this.color = getColor()
+      if (this.offset < -50 && this.words.getNext()) {
+        this.words.getNextToCurrent();
+        this.fontSize = this.getFontSize();
+        this.color = getColor();
         this.offset = 0;
-      } else if (this.offset > 50 && c.getPrev()) {
-        this.word = c.getPrevToCurrent();
-        this.fontSize = this.getFontSize()
-        this.color = getColor()
+      } else if (this.offset > 50 && this.words.getPrev()) {
+        this.words.getPrevToCurrent();
+        this.fontSize = this.getFontSize();
+        this.color = getColor();
         this.offset = 0;
       } else {
         this.offset = 0;
       }
     },
-    getFontSize(){
+    getFontSize() {
       return 15 + Math.floor(Math.random() * 70) + "vw";
     },
-    async del() {
+    del() {
       if (confirm("Delete?")) {
-        this.word = await c.delWord();
+        this.words.delWord();
       }
     }
   }

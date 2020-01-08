@@ -11,7 +11,7 @@
     <section>
       <ul>
         <li
-          v-for="item in list"
+          v-for="item in cnWords.list"
           :key="item.id"
           @click="detail(item)"
         >
@@ -27,25 +27,21 @@ import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
 import { storeName_cnWords } from "../../services/db";
 
-let cnWords = new Word('cnWords')
 export default {
   data() {
     return {
-      list: []
+      cnWords:new Word('cnWords'),
     };
   },
   components: {
     TitleBar
-  },
-  async created() {
-    this.list = await cnWords.getList();
   },
   methods: {
     clickPlus() {
       this.$router.push({ path: `/ChnAdd/${storeName_cnWords}` });
     },
     detail(item) {
-      cnWords.setCurrent(item)
+      this.cnWords.setCurrent(item)
       this.$router.push({ path: `/CnWordsDetail` });
     }
   }

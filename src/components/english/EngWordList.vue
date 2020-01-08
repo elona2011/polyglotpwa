@@ -1,14 +1,17 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="单词" parent-name="home">
+      <TitleBar
+        title="单词"
+        parent-name="home"
+      >
         <strong @click="clickPlus">+</strong>
       </TitleBar>
     </header>
     <section>
       <ul>
         <li
-          v-for="item in list"
+          v-for="item in enWords.list"
           :key="item.id"
           @click="detail(item)"
         >
@@ -24,26 +27,21 @@ import Word from "../../services/Word";
 import TitleBar from "../TitleBar";
 import { storeName_enWords } from "../../services/db";
 
-let cnWords = new Word(storeName_enWords)
 export default {
   data() {
     return {
-      list: []
+      enWords: new Word(storeName_enWords),
     };
   },
   components: {
     TitleBar
-  },
-  async created() {
-    debugger
-    this.list = await cnWords.getList();
   },
   methods: {
     clickPlus() {
       this.$router.push({ path: `/EngWordAdd/${storeName_enWords}` });
     },
     detail(item) {
-      cnWords.setCurrent(item)
+      this.enWords.setCurrent(item);
       this.$router.push({ path: `/EngWordDetail` });
     }
   }

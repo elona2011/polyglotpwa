@@ -72,7 +72,7 @@ export default {
         // li.releasePointerCapture(e.pointerId);
       }
     },
-    play(item,i) {
+    play(i) {
       this.$router.push({ path: `/play/${i}` });
     },
     clickPlus() {
