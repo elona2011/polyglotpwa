@@ -1,10 +1,5 @@
 <template>
-  <div class="main">
-    <header>
-      <TitleBar title="New Word">
-        <strong @click="del">-</strong>
-      </TitleBar>
-    </header>
+  <div class="detail">
     <section class="setup-group">
       <div class="group-item">
         <div
@@ -45,22 +40,24 @@
 </template>
 
 <script>
-import Word from "../../services/Word";
-import TitleBar from "../TitleBar";
-import { getColor } from "../../services/color";
+import Word from "../services/Word";
+import { getColor } from "../services/color";
 
 let x;
 export default {
+  props: {
+    storeName: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-      words: new Word("words"),
+      words: new Word(this.storeName),
       offset: 0,
       color: getColor(),
       fontSize: this.getFontSize()
     };
-  },
-  components: {
-    TitleBar
   },
   methods: {
     remember() {
@@ -104,13 +101,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.main {
+.detail {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-div.main header {
+div.detail header {
   flex: 1;
   display: flex;
   justify-content: center;

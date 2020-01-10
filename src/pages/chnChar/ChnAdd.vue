@@ -21,7 +21,7 @@
 
 <script>
 import Word from "../../services/Word";
-import TitleBar from "../TitleBar";
+import TitleBar from "../../components/TitleBar";
 
 export default {
   data() {

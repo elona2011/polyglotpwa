@@ -3,7 +3,7 @@ import { openDB } from "idb"
 export const dbName = 'mydb'
 export const storeName_config = 'config'
 export const storeName_mp3 = 'mp3'
-export const storeName_words = 'words'
+export const storeName_words = 'words' //二类字
 export const storeName_cnWords = 'cnWords'
 export const storeName_enWords = 'enWords'
 export const storeName_enDadWords = 'enDadWords'

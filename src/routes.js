@@ -1,17 +1,17 @@
 import Home from "./components/Home.vue";
 import AudioList from "./components/mp3/AudioList.vue";
 import AudioPlay from "./components/mp3/AudioPlay.vue";
-import EngWordList from "./components/english/EngWordList.vue";
-import EngWordAdd from "./components/english/EngWordAdd.vue";
-import EngWordDetail from "./components/english/EngWordDetail.vue";
-import EngDadList from "./components/english/EngDadList.vue";
-import EngDadAdd from "./components/english/EngDadAdd.vue";
-import EngDadDetail from "./components/english/EngDadDetail.vue";
-import ChnCharList from "./components/chnChar/ChnCharList.vue";
-import ChnAdd from "./components/chnChar/ChnAdd.vue";
-import ChnCharDetail from "./components/chnChar/ChnCharDetail.vue";
-import CnWordsList from "./components/chnChar/CnWordsList.vue";
-import CnWordsDetail from "./components/chnChar/CnWordsDetail.vue";
+import EngWordList from "./pages/english/EngWordList.vue";
+import EngWordAdd from "./pages/english/EngWordAdd.vue";
+import EngWordDetail from "./pages/english/EngWordDetail.vue";
+import EngDadList from "./pages/english/EngDadList.vue";
+import EngDadAdd from "./pages/english/EngDadAdd.vue";
+import EngDadDetail from "./pages/english/EngDadDetail.vue";
+import ChnChar2List from "./pages/chnChar/ChnChar2List.vue";
+import ChnAdd from "./pages/chnChar/ChnAdd.vue";
+import ChnChar2Detail from "./pages/chnChar/ChnChar2Detail.vue";
+import CnWordsList from "./pages/chnChar/CnWordsList.vue";
+import CnWordsDetail from "./pages/chnChar/CnWordsDetail.vue";
 
 export default [
   {
@@ -27,16 +27,16 @@ export default [
     path: '/play/:index',
     component: AudioPlay
   }, {
-    name: 'ChnCharList',
-    path: '/ChnCharList',
-    component: ChnCharList
+    name: 'ChnChar2List',
+    path: '/ChnChar2List',
+    component: ChnChar2List
   }, {
     name: 'ChnAdd',
     path: '/ChnAdd/:store',
     component: ChnAdd
   }, {
-    path: '/ChnCharDetail',
-    component: ChnCharDetail
+    path: '/ChnChar2Detail',
+    component: ChnChar2Detail
   },{
     name: 'CnWordsList',
     path: '/CnWordsList',

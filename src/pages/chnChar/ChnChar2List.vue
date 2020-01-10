@@ -8,41 +8,32 @@
         <strong @click="clickPlus">+</strong>
       </TitleBar>
     </header>
-    <section>
-      <ul>
-        <li
-          v-for="item in chnChar.list"
-          :key="item.id"
-          @click="detail(item)"
-        >
-          <span>{{item.name}}</span>
-        </li>
-      </ul>
-    </section>
+    <List
+      :storeName="storeName"
+      detailRoute="ChnChar2Detail"
+      layout="grid"
+    />
   </div>
 </template>
 
 <script>
-import Word from "../../services/Word";
 import { storeName_words } from "../../services/db";
-import TitleBar from "../TitleBar";
+import TitleBar from "../../components/TitleBar";
+import List from "../../components/List";
 
 export default {
   data() {
     return {
-      chnChar: new Word("words"),
+      storeName: storeName_words
     };
   },
   components: {
-    TitleBar
+    TitleBar,
+    List
   },
   methods: {
     clickPlus() {
       this.$router.push({ path: `/ChnAdd/${storeName_words}` });
-    },
-    detail(item) {
-      this.chnChar.setCurrent(item);
-      this.$router.push({ path: `/ChnCharDetail` });
     }
   }
 };
@@ -61,17 +52,5 @@ div.main header {
   display: flex;
   justify-content: center;
   background-color: #eee;
-}
-ul {
-  display: inline-grid;
-  grid-template-columns: repeat(5, 20vw);
-  grid-auto-rows: 20vw;
-}
-ul li {
-  background-color: bisque;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  margin: 1px;
 }
 </style>

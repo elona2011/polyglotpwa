@@ -21,7 +21,7 @@
 
 <script>
 import Word from "../../services/Word";
-import TitleBar from "../TitleBar";
+import TitleBar from "../../components/TitleBar";
 import { storeName_enDadWords } from "../../services/db";
 
 let cnWords = new Word(storeName_enDadWords)

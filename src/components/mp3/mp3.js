@@ -79,7 +79,7 @@ export class Mp3 {
   setAllLoop() {
     this.isAllLoop = !this.isAllLoop
     if (this.audio) {
-      this.audio.loop = this.isAllLoop
+      this.audio.loop = !this.isAllLoop
     }
     dbSetConfig(this.config)
   }

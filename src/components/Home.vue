@@ -4,7 +4,8 @@
       <TitleBar title="Home" :show-back="false"></TitleBar>
     </header>
     <section>
-      <div @click="chineseChar">识字</div>
+      <div @click="chineseChar">二类字</div>
+      <div @click="chineseChar">一类字</div>
       <div @click="cnWord">语文</div>
       <div @click="engWord">英语单词</div>
       <div>英语句子</div>
@@ -37,7 +38,7 @@ export default {
   },
   methods: {
     chineseChar() {
-      this.$router.push({ name: `ChnCharList` });
+      this.$router.push({ name: `ChnChar2List` });
     },
     cnWord() {
       this.$router.push({ name: `CnWordsList` });
