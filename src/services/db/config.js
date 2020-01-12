@@ -1,0 +1,10 @@
+export const dbName = 'mydb'
+export const storeName_config = 'config'
+export const storeName_mp3 = 'mp3'
+export const storeName_words = 'words' //二类字
+export const storeName_words_1 = 'words1' //一类字
+export const storeName_cnWords = 'cnWords'
+export const storeName_enWords = 'enWords'
+export const storeName_enDadWords = 'enDadWords'
+export const storeName_todo = 'todo'
+export const version = 7

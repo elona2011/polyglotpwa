@@ -1,30 +1,26 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar
-        title="识字"
-        parent-name="home"
-      >
+      <TitleBar title="List">
         <strong @click="clickPlus">+</strong>
+        <input @change="addMp3" id="audio_file" type="file" accept="audio/*" style="display:none;" />
       </TitleBar>
     </header>
-    <List
-      :storeName="storeName"
-      detailRoute="ChnChar2Detail"
-      layout="grid"
-    />
+    <section>
+      <List :dataObj="mp3" detailRoute="play" layout="block" :delete="true" />
+    </section>
   </div>
 </template>
 
 <script>
-import { storeName_words } from "../../services/db";
-import TitleBar from "../../components/TitleBar";
-import List from "../../components/List";
+import { Mp3 } from "../services/mp3";
+import TitleBar from "../components/TitleBar";
+import List from "../components/List";
 
 export default {
   data() {
     return {
-      storeName: storeName_words
+      mp3: new Mp3()
     };
   },
   components: {
@@ -33,7 +29,12 @@ export default {
   },
   methods: {
     clickPlus() {
-      this.$router.push({ path: `/ChnAdd/${storeName_words}` });
+      let audio_file = document.querySelector("#audio_file");
+      audio_file.click();
+    },
+    addMp3(e) {
+      var files = e.target.files;
+      this.mp3.addMp3(files[0]);
     }
   }
 };

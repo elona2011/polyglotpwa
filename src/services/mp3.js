@@ -1,4 +1,5 @@
-import { getListMp3, delMp3ById, addMp3, getMp3ById, dbSetConfig, dbGetConfig } from "../../services/db";
+import { getListMp3, delMp3ById, addMp3, getMp3ById, dbSetConfig, dbGetConfig } from "./db/db";
+import List from "./List";
 
 export class Mp3 {
   constructor() {
@@ -15,9 +16,11 @@ export class Mp3 {
     this.duration = 0
     this.isAllLoop = false
     this.file = {}
+    this.curItem = {}
     this.list = [];
+    Object.assign(this, List());
+    this.getCurrent();
     (async () => {
-      this.getMp3List()
       let config = await dbGetConfig()
       if (config) {
         Mp3.instance = Object.assign(this, config)
@@ -69,7 +72,8 @@ export class Mp3 {
     this.isPlay = true
   }
   playNext() {
-    this.playMp3ByIndex(this.index >= this.list.length - 1 ? 0 : ++this.index)
+    this.getNextToCurrent()
+    this.playCurItem()
   }
   pause() {
     this.audio.pause()
@@ -83,31 +87,23 @@ export class Mp3 {
     }
     dbSetConfig(this.config)
   }
-  async getMp3List() {
+  async getList() {
     return this.list = await getListMp3()
   }
 
   async delMp3ById(id) {
     await delMp3ById(id)
-    await this.getMp3List()
+    await this.getList()
   }
 
   async addMp3(file) {
     await addMp3(file)
-    await this.getMp3List()
+    await this.getList()
   }
 
-  async getFirstMp3() {
-    if (!this.list) this.getMp3List()
-    if (this.list && this.list.length) {
-      return this.list[0]
-    } else {
-      return null
-    }
-  }
-
-  playMp3ByIndex(i) {
-    this.playNewMp3(this.list[i]);
+  async playCurItem(){
+    await this.getCurrent()
+    this.playPauseMp3(this.curItem)
   }
 
   playPauseMp3(file) {
@@ -121,11 +117,7 @@ export class Mp3 {
       this.playNewMp3(file)
     }
   }
-  async continuePauseOrPlayFirst() {
-    let file = await this.getFirstMp3()
-    this.playPauseMp3(file)
-    return this.isPlay
-  }
+  
   playNewMp3(file) {
     if (file) {
       this.init(file)

@@ -4,24 +4,23 @@
       <TitleBar title="Home" :show-back="false"></TitleBar>
     </header>
     <section>
-      <div @click="chineseChar">二类字</div>
-      <div @click="chineseChar">一类字</div>
+      <div @click="chineseChar(2)">二类字</div>
+      <div @click="chineseChar(1)">一类字</div>
       <div @click="cnWord">语文</div>
       <div @click="engWord">英语单词</div>
       <div>英语句子</div>
       <div>5</div>
       <div>6</div>
-      <div>7</div>
-      <div>8</div>
+      <div @click="todo">todo</div>
       <div @click="eng">爸爸英语</div>
+      <div @click="Login">Login</div>
     </section>
   </div>
 </template>
 
 <script>
-import { getListMp3, delMp3ById, addMp3 } from "../services/db";
-import { bus } from "../main";
-import TitleBar from "./TitleBar";
+import { getListMp3, delMp3ById, addMp3 } from "../services/db/db";
+import TitleBar from "../components/TitleBar";
 
 let x, li, offset;
 export default {
@@ -37,8 +36,11 @@ export default {
     this.list = await getListMp3();
   },
   methods: {
-    chineseChar() {
-      this.$router.push({ name: `ChnChar2List` });
+    Login(){
+      this.$router.push({ name: `Login` });
+    },
+    chineseChar(i) {
+      this.$router.push({ path: `ChnCharList/${i}` });
     },
     cnWord() {
       this.$router.push({ name: `CnWordsList` });
@@ -48,6 +50,9 @@ export default {
     },
     eng() {
       this.$router.push({ name: `EngDadList` });
+    },
+    todo(){
+      this.$router.push({ name: `TodoList` });
     }
   }
 };

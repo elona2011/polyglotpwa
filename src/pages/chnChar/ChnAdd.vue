@@ -1,12 +1,12 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar title="New Word" />
+      <TitleBar title="添加" />
     </header>
     <section class="setup-group">
       <div class="group-item">
         <div class="name-value-reset">
-          <span class="name">word:</span>
+          <span class="name">name:</span>
           <input type="text" name id="newWord" v-model="newWord" />
         </div>
       </div>

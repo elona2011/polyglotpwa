@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { Mp3 } from "./components/mp3/mp3";
+import { Mp3 } from "./services/mp3";
 
 let mp3 = new Mp3();
 export default {
@@ -43,7 +43,7 @@ export default {
       this.$router.push({ name: "listen" });
     },
     PlayClick() {
-      mp3.continuePauseOrPlayFirst();
+      mp3.playCurItem();
     },
     setLoop() {
       mp3.setAllLoop()

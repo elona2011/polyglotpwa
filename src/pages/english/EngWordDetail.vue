@@ -47,7 +47,7 @@
 <script>
 import Word from "../../services/Word";
 import TitleBar from "../../components/TitleBar";
-import { storeName_enWords } from "../../services/db";
+import { storeName_enWords } from "../../services/db/config";
 import { getColor } from "../../services/color";
 
 let x;

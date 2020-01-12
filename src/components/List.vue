@@ -2,9 +2,12 @@
   <section :class="layout">
     <ul>
       <li
-        v-for="item in chnChar.list"
+        v-for="item in dataObj.list"
         :key="item.id"
         @click="detail(item)"
+        @pointerdown="down($event,item)"
+        @pointermove="move($event,item)"
+        @pointerup="up($event,item)"
       >
         <span>{{item.name}}</span>
       </li>
@@ -17,8 +20,8 @@ import Word from "../services/Word";
 
 export default {
   props: {
-    storeName: {
-      type: String,
+    dataObj: {
+      type: Object,
       required: true
     },
     detailRoute: {
@@ -26,17 +29,53 @@ export default {
     },
     layout: {
       type: String
+    },
+    delete: {
+      type: Boolean
     }
   },
   data() {
     return {
-      chnChar: new Word(this.storeName)
+      list: [],
+      x: 0,
+      li: null,
+      offset: 0
     };
+  },
+  created() {
+    this.dataObj.getList();
   },
   methods: {
     detail(item) {
-      this.chnChar.setCurrent(item);
+      this.dataObj.setCurrent(item);
       this.detailRoute && this.$router.push({ path: `/${this.detailRoute}` });
+    },
+    down(e) {
+      this.x = e.x;
+    },
+    move(e) {
+      if(this.delete){
+        e.preventDefault();
+        this.li = e.target.closest("li");
+  
+        // li.setPointerCapture(e.pointerId)
+        this.offset = e.x - this.x;
+        if (this.offset < 0) {
+          this.li.setAttribute("style", `transform:translate(${this.offset}px);`);
+        }
+      }
+    },
+    up(e, item) {
+      if (this.li) {
+        let rect = this.li.getBoundingClientRect();
+        if (Math.abs(this.offset) > rect.width / 2) {
+          this.dataObj.delMp3ById(item.id);
+          // this.list = await mp3.getMp3List();
+        } else {
+          this.li.setAttribute("style", ``);
+        }
+        // li.releasePointerCapture(e.pointerId);
+      }
     }
   }
 };
@@ -66,5 +105,15 @@ export default {
   height: 7vh;
   line-height: 7vh;
   float: left;
+}
+.block li {
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+  height: 8vh;
+  background-color: bisque;
+  /* justify-content: center; */
+  margin-bottom: 2px;
+  touch-action: pan-y;
 }
 </style>

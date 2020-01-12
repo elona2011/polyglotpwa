@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { addMp3 } from "../services/db";
+import { addMp3 } from "../services/db/db";
 import { bus } from "../main";
 
 export default {

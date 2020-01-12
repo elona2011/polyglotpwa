@@ -38,7 +38,7 @@
 <script>
 import Word from "../../services/Word";
 import TitleBar from "../../components/TitleBar";
-import { storeName_enDadWords } from "../../services/db";
+import { storeName_enDadWords } from "../../services/db/config";
 
 let c = new Word(storeName_enDadWords),
   x;

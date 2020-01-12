@@ -56,8 +56,8 @@
 </template>
 
 <script>
-import { Mp3 } from "./mp3";
-import TitleBar from "../TitleBar";
+import { Mp3 } from "../services/mp3";
+import TitleBar from "../components/TitleBar";
 
 let mp3 = new Mp3()
 
@@ -73,7 +73,7 @@ export default {
     TitleBar
   },
   async created() {
-    mp3.playMp3ByIndex(+this.$route.params.index)
+    mp3.playCurItem()
   },
   computed: {
     currentTime() {

@@ -1,11 +1,11 @@
 module.exports = {
-  pwa:{
+  pwa: {
     name: 'My App',
     themeColor: '#4DBA87',
     msTileColor: '#000000',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
-    
+
     // configure the manifest options
     manifestOptions: {
       display: 'landscape',
@@ -20,5 +20,14 @@ module.exports = {
     //   swSrc: 'dev/sw.js',
     //   // ...other Workbox options...
     // }
+  },
+  devServer: {
+    // port: 38157
+    proxy: {
+      '/login': {
+        target: 'http://192.168.1.4',
+        secure: false
+      }
+    }
   }
 }

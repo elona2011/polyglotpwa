@@ -2,7 +2,7 @@
   <div class="main">
     <header>
       <TitleBar
-        title="语文"
+        title="todo"
         parent-name="home"
       >
         <strong @click="clickPlus">+</strong>
@@ -10,22 +10,22 @@
     </header>
     <List
       :dataObj="words"
-      detailRoute="CnWordsDetail"
-      layout="inline"
+      detailRoute="ChnChar2Detail"
+      layout="grid"
     />
   </div>
 </template>
 
 <script>
-import TitleBar from "../../components/TitleBar";
-import { storeName_cnWords } from "../../services/db/config";
-import List from "../../components/List";
-import Word from "../../services/Word";
+import { storeName_todo } from "../services/db/config";
+import TitleBar from "../components/TitleBar";
+import List from "../components/List";
+import Word from "../services/Word";
 
 export default {
   data() {
     return {
-      words: new Word(storeName_cnWords)
+      words: new Word(storeName_todo)
     };
   },
   components: {
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     clickPlus() {
-      this.$router.push({ path: `/ChnAdd/${storeName_cnWords}` });
+      this.$router.push({ path: `/ChnAdd/${storeName_todo}` });
     }
   }
 };
