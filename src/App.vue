@@ -43,7 +43,7 @@ export default {
       this.$router.push({ name: "listen" });
     },
     PlayClick() {
-      mp3.playCurItem();
+      mp3.playPauseMp3();
     },
     setLoop() {
       mp3.setAllLoop()
@@ -54,7 +54,7 @@ export default {
       return this.mp3.isPlay;
     },
     isAllLoop() {
-      return this.mp3.isAllLoop ? "green" : "grey";
+      return this.mp3.isAllLoop ? "red" : "grey";
     }
   }
 };

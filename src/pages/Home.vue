@@ -19,21 +19,11 @@
 </template>
 
 <script>
-import { getListMp3, delMp3ById, addMp3 } from "../services/db/db";
 import TitleBar from "../components/TitleBar";
 
-let x, li, offset;
 export default {
-  data() {
-    return {
-      list: []
-    };
-  },
   components: {
     TitleBar
-  },
-  async created() {
-    this.list = await getListMp3();
   },
   methods: {
     Login(){

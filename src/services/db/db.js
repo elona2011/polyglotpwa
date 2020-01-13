@@ -12,12 +12,6 @@ export const dbGetConfig = async () => {
 }
 export const addWord = word => addValue(storeName_words, word)
 export const addMp3 = async mp3 => await addValue(storeName_mp3, mp3)
-export const delMp3ById = async id => await delById(storeName_mp3, id)
-export const delWordById = id => delById(storeName_words, id)
-export const getMp3ById = id => getById(storeName_mp3, id)
-export const getWordById = id => getById(storeName_words, id)
-export const getListMp3 = () => getList(storeName_mp3)
-// export const getListWord = () => getList(storeName_words)
 export const getListWordByForget = async () => {
   let db = await openMyDB()
   let index = await db.transaction(storeName_words).objectStore(storeName_words).index('forget')

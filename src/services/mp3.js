@@ -1,8 +1,9 @@
-import { getListMp3, delMp3ById, addMp3, getMp3ById, dbSetConfig, dbGetConfig } from "./db/db";
+import { delById, addValue, dbSetConfig, dbGetConfig } from "./db/db";
 import List from "./List";
 
-export class Mp3 {
+export class Mp3 extends List {
   constructor() {
+    super({ storeName: 'mp3' })
     if (Mp3.instance instanceof Mp3) {
       return Mp3.instance
     }
@@ -16,9 +17,7 @@ export class Mp3 {
     this.duration = 0
     this.isAllLoop = false
     this.file = {}
-    this.curItem = {}
-    this.list = [];
-    Object.assign(this, List());
+
     this.getCurrent();
     (async () => {
       let config = await dbGetConfig()
@@ -33,27 +32,34 @@ export class Mp3 {
       this.isInit = true
       this.file = file
       this.name = file.name
-      this.audio = this.audio ? this.audio : new Audio()
       this.isPlay = false
-      if (!this.isAllLoop) {
-        this.audio.loop = true
+      if (!this.audio) {
+        this.audio = new Audio()
+        if (!this.isAllLoop) {
+          this.audio.loop = true
+        }
+        this.audio.playbackRate = this.playbackRate
+        this.audio.addEventListener("loadedmetadata", () => {
+          this.duration = this.audio.duration;
+          dbSetConfig(this.config)
+        });
+        this.audio.addEventListener("timeupdate", () => {
+          this.currentTime = this.audio.currentTime
+          dbSetConfig(this.config)
+        });
+        this.audio.addEventListener("ended", () => {
+          this.playNext()
+        });
       }
       this.objectURL = URL.createObjectURL(file)
       this.audio.src = this.objectURL
-      this.audio.playbackRate = this.playbackRate
-      this.audio.addEventListener("loadedmetadata", () => {
-        this.duration = this.audio.duration;
-        dbSetConfig(this.config)
-      });
-      this.audio.addEventListener("timeupdate", () => {
-        this.currentTime = this.audio.currentTime
-        dbSetConfig(this.config)
-      });
-      this.audio.addEventListener("ended", () => {
-        this.playNext()
-      });
       dbSetConfig(this.config)
     }
+  }
+
+  setCurrent(item) {
+    super.setCurrent(item)
+    this.playCurItem()
   }
 
   setCurrentTime(t) {
@@ -67,18 +73,6 @@ export class Mp3 {
     }
     dbSetConfig(this.config)
   }
-  play() {
-    this.audio.play()
-    this.isPlay = true
-  }
-  playNext() {
-    this.getNextToCurrent()
-    this.playCurItem()
-  }
-  pause() {
-    this.audio.pause()
-    this.isPlay = false
-  }
 
   setAllLoop() {
     this.isAllLoop = !this.isAllLoop
@@ -87,26 +81,36 @@ export class Mp3 {
     }
     dbSetConfig(this.config)
   }
-  async getList() {
-    return this.list = await getListMp3()
-  }
 
   async delMp3ById(id) {
-    await delMp3ById(id)
+    await delById(this.storeName, id)
     await this.getList()
   }
 
   async addMp3(file) {
-    await addMp3(file)
+    await addValue(this.storeName, file)
     await this.getList()
   }
 
-  async playCurItem(){
-    await this.getCurrent()
-    this.playPauseMp3(this.curItem)
+  play() {
+    this.audio.play()
+    this.isPlay = true
+  }
+  playNext() {
+    this.getNextToCurrent({ isLoop: true })
+    this.playCurItem()
+  }
+  pause() {
+    this.audio.pause()
+    this.isPlay = false
   }
 
-  playPauseMp3(file) {
+  async playCurItem() {
+    await this.getCurrent()
+    this.playNewMp3(this.curItem)
+  }
+
+  playPauseMp3() {
     if (this.isInit) {
       if (this.isPlay) {
         this.pause()
@@ -114,10 +118,10 @@ export class Mp3 {
         this.play()
       }
     } else {
-      this.playNewMp3(file)
+      this.playCurItem()
     }
   }
-  
+
   playNewMp3(file) {
     if (file) {
       this.init(file)
