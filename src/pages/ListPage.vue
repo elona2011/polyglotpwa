@@ -2,7 +2,7 @@
   <div class="main">
     <header>
       <TitleBar
-        title="语文"
+        :title="config.title"
         parent-name="home"
       >
         <strong @click="clickPlus">+</strong>

@@ -4,8 +4,8 @@
       <TitleBar title="Home" :show-back="false"></TitleBar>
     </header>
     <section>
-      <div @click="chineseChar(2)">二类字</div>
-      <div @click="chineseChar(1)">一类字</div>
+      <div @click="chineseChar2">二类字</div>
+      <div @click="chineseChar1">一类字</div>
       <div @click="cnWord">语文</div>
       <div @click="engWord">英语单词</div>
       <div>英语句子</div>
@@ -26,23 +26,26 @@ export default {
     TitleBar
   },
   methods: {
-    Login(){
+    Login() {
       this.$router.push({ name: `Login` });
     },
-    chineseChar(i) {
-      this.$router.push({ path: `ChnCharList/${i}` });
+    chineseChar1() {
+      this.$router.push({ path: `list/words1` });
+    },
+    chineseChar2() {
+      this.$router.push({ path: `list/words` });
     },
     cnWord() {
-      this.$router.push({ name: `CnWordsList` });
+      this.$router.push({ path: `list/cnWords` });
     },
     engWord() {
-      this.$router.push({ name: `EngWordList` });
+      this.$router.push({ path: `list/enWords` });
     },
     eng() {
-      this.$router.push({ name: `EngDadList` });
+      this.$router.push({ path: `list/enDadWords` });
     },
-    todo(){
-      this.$router.push({ name: `TodoList` });
+    todo() {
+      this.$router.push({ path: `list/todo` });
     }
   }
 };
