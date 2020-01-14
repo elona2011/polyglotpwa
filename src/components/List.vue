@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import Word from "../services/Word";
-
 export default {
   props: {
     dataObj: {
@@ -48,20 +46,26 @@ export default {
   methods: {
     detail(item) {
       this.dataObj.setCurrent(item);
-      this.detailRoute && this.$router.push({ path: `/${this.detailRoute}` });
+      this.detailRoute &&
+        this.$router.push({
+          path: `/${this.detailRoute}/${this.dataObj.storeName}`
+        });
     },
     down(e) {
       this.x = e.x;
     },
     move(e) {
-      if(this.delete){
+      if (this.delete) {
         e.preventDefault();
         this.li = e.target.closest("li");
-  
+
         // li.setPointerCapture(e.pointerId)
         this.offset = e.x - this.x;
         if (this.offset < 0) {
-          this.li.setAttribute("style", `transform:translate(${this.offset}px);`);
+          this.li.setAttribute(
+            "style",
+            `transform:translate(${this.offset}px);`
+          );
         }
       }
     },

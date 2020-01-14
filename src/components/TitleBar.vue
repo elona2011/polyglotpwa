@@ -1,15 +1,15 @@
 <template>
   <div>
-    <span @click="goBack" v-if="showBack">&lt;</span>
+    <span
+      @click="goBack"
+      v-if="showBack"
+    >&lt;</span>
     <p>{{title}}</p>
     <slot></slot>
   </div>
 </template>
 
 <script>
-import { addMp3 } from "../services/db/db";
-import { bus } from "../main";
-
 export default {
   props: {
     title: String,
@@ -18,11 +18,6 @@ export default {
       default: true
     }
   },
-  created() {
-    bus.$on("TitleBar", e => {
-      this.title = e.title;
-    });
-  },
   methods: {
     goBack() {
       // if (this.parentName) {
@@ -30,21 +25,6 @@ export default {
       // } else {
       this.$router.go(-1);
       // }
-    },
-    clickPlus() {
-      // let mp3select = document.createElement("input");
-      let audio_file = document.querySelector("#audio_file");
-      audio_file.click();
-    },
-    getMp3(e) {
-      var files = e.target.files;
-      var file = URL.createObjectURL(files[0]);
-      addMp3(files[0]);
-      bus.$emit("add-mp3");
-      // mp3.defaultPlaybackRate = 2
-      // let mp3 = new Audio()
-      // mp3.src = file;
-      // mp3.play();
     }
   }
 };

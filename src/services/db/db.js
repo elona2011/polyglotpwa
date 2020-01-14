@@ -35,7 +35,7 @@ const getById = async (storeName, id) => {
   return item
 }
 
-const addValue = async (storeName, val) => {
+export const addValue = async (storeName, val) => {
   let db = await openMyDB()
   const tx = db.transaction(storeName, 'readwrite')
   const store = await tx.objectStore(storeName)

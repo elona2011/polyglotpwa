@@ -14,6 +14,9 @@ import CnWordsList from "./pages/chnChar/CnWordsList.vue";
 import CnWordsDetail from "./pages/chnChar/CnWordsDetail.vue";
 import TodoList from "./pages/TodoList.vue";
 import Login from "./pages/Login.vue";
+import ListPage from "./pages/ListPage.vue";
+import ListAddPage from "./pages/ListAddPage.vue";
+import ListDetailPage from "./pages/ListDetailPage.vue";
 
 export default [
   {
@@ -24,6 +27,18 @@ export default [
     name: 'home',
     path: '/',
     component: Home
+  }, {
+    name: 'list',
+    path: '/list/:storeName',
+    component: ListPage
+  }, {
+    name: 'listadd',
+    path: '/listadd/:storeName',
+    component: ListAddPage
+  }, {
+    name: 'listdetail',
+    path: '/listdetail/:storeName',
+    component: ListDetailPage
   }, {
     name: 'listen',
     path: '/listen',
