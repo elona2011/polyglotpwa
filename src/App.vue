@@ -40,7 +40,7 @@ export default {
       this.$router.push({ name: "home" });
     },
     ListenClick() {
-      this.$router.push({ name: "listen" });
+      this.$router.push({ path: "play/mp3" });
     },
     PlayClick() {
       mp3.playPauseMp3();

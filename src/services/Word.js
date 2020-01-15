@@ -1,5 +1,6 @@
-import { openMyDB, getList } from "./db/db";
+import { openMyDB } from "./db/db";
 import List from "./List";
+import { getPageConfig } from "../config";
 
 export default class Word extends List {
   constructor(storeName) {
@@ -12,6 +13,7 @@ export default class Word extends List {
       return Word[storeName]
     }
     this.storeName = storeName
+    Object.assign(this, getPageConfig(storeName))
     Word[storeName] = this;
     this.getCurrent();
   }

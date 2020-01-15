@@ -2,7 +2,16 @@
   <div class="main">
     <header>
       <TitleBar title="New Word">
-        <strong @click="del">-</strong>
+        <strong @click="triggerOptions">...</strong>
+        <div
+          class="options"
+          v-show="isOptionsShow"
+        >
+          <ul>
+            <li @click="test">edit</li>
+            <li @click="del">delete</li>
+          </ul>
+        </div>
       </TitleBar>
     </header>
     <section>
@@ -20,6 +29,7 @@ export default {
   data() {
     let storeName = this.$route.params.storeName;
     return {
+      isOptionsShow: false,
       storeName,
       words: new Word(storeName)
     };
@@ -29,10 +39,18 @@ export default {
     Detail
   },
   methods: {
+    test() {
+      console.log(13);
+      this.triggerOptions();
+    },
+    triggerOptions() {
+      this.isOptionsShow = !this.isOptionsShow;
+    },
     del() {
       if (confirm("Delete?")) {
         this.words.delWord();
       }
+      this.triggerOptions();
     }
   }
 };
@@ -54,5 +72,22 @@ div.main header {
 }
 div.main section {
   flex: 12;
+}
+.options {
+  position: absolute;
+  right: 0;
+  bottom: -14vh;
+  z-index: 1;
+}
+.options > ul {
+  width: 30vw;
+}
+.options > ul > li {
+  display: flex;
+  height: 7vh;
+  background-color: #f0e8e8;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1px;
 }
 </style>

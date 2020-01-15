@@ -20,14 +20,11 @@
 import TitleBar from "../components/TitleBar";
 import List from "../components/List";
 import Word from "../services/Word";
-import { getPageConfig } from "../config";
 
 export default {
   data() {
-    let config = getPageConfig(this.$route.params.storeName);
     return {
-      config,
-      words: new Word(config.storeName)
+      words: new Word(this.$route.params.storeName)
     };
   },
   components: {
@@ -36,7 +33,7 @@ export default {
   },
   methods: {
     clickPlus() {
-      this.$router.push({ path: `/listadd/${this.config.storeName}` });
+      this.$router.push({ path: `/listadd/${this.words.storeName}` });
     }
   }
 };

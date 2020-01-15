@@ -30,7 +30,8 @@ export const getPageConfig = pageName => {
     [storeName_enDadWords]: {
       title: 'eng',
       storeName: storeName_enDadWords,
-      layout: 'inline'
+      layout: 'inline',
+      fontSize: '10vh'
     }
   }[pageName]
 }

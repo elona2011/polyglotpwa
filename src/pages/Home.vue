@@ -9,7 +9,7 @@
       <div @click="cnWord">语文</div>
       <div @click="engWord">英语单词</div>
       <div>英语句子</div>
-      <div>5</div>
+      <div @click="listen">Listen</div>
       <div>6</div>
       <div @click="todo">todo</div>
       <div @click="eng">爸爸英语</div>
@@ -46,6 +46,9 @@ export default {
     },
     todo() {
       this.$router.push({ path: `list/todo` });
+    },
+    listen(){
+      this.$router.push({ path: `listen` });
     }
   }
 };

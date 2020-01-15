@@ -35,6 +35,7 @@ export default {
 div {
   flex: 1;
   display: flex;
+  position: relative;
 }
 div span {
   flex: 1;
