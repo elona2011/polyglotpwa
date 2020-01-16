@@ -17,7 +17,11 @@
               :class="{'icon-play':!isPlay,'icon-pause':isPlay,'play-icon':true}"
               @click="PlayClick"
             ></span>
-            <span class="icon-loop play-icon" @click="setLoop" :style="{color:isAllLoop}"></span>
+            <span
+              class="icon-loop play-icon"
+              @click="setLoop"
+              :style="{color:isAllLoop}"
+            ></span>
           </li>
         </ul>
       </nav>
@@ -40,13 +44,15 @@ export default {
       this.$router.push({ name: "home" });
     },
     ListenClick() {
-      this.$router.push({ path: "play/mp3" });
+      if (this.$route.path !== "/play/mp3") {
+        this.$router.push({ path: "/play/mp3" });
+      }
     },
     PlayClick() {
       mp3.playPauseMp3();
     },
     setLoop() {
-      mp3.setAllLoop()
+      mp3.setAllLoop();
     }
   },
   computed: {

@@ -2,7 +2,7 @@
   <div class="main">
     <header>
       <TitleBar
-        :title="config.title"
+        :title="words.title"
         parent-name="home"
       >
         <strong @click="clickPlus">+</strong>
@@ -11,7 +11,7 @@
     <List
       :dataObj="words"
       detailRoute="listdetail"
-      :layout="config.layout"
+      :layout="words.layout"
     />
   </div>
 </template>

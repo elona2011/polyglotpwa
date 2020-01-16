@@ -35,10 +35,6 @@ export class Mp3 extends List {
       this.isPlay = false
       if (!this.audio) {
         this.audio = new Audio()
-        if (!this.isAllLoop) {
-          this.audio.loop = true
-        }
-        this.audio.playbackRate = this.playbackRate
         this.audio.addEventListener("loadedmetadata", () => {
           this.duration = this.audio.duration;
           dbSetConfig(this.config)
@@ -53,6 +49,10 @@ export class Mp3 extends List {
       }
       this.objectURL = URL.createObjectURL(file)
       this.audio.src = this.objectURL
+      if (!this.isAllLoop) {
+        this.audio.loop = true
+      }
+      this.audio.playbackRate = this.playbackRate
       dbSetConfig(this.config)
     }
   }
