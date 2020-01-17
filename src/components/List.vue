@@ -119,5 +119,6 @@ export default {
   /* justify-content: center; */
   margin-bottom: 2px;
   touch-action: pan-y;
+  padding: 5px;
 }
 </style>

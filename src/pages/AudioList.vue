@@ -34,7 +34,7 @@ export default {
     },
     addMp3(e) {
       var files = e.target.files;
-      this.mp3.addMp3(files[0]);
+      this.mp3.add(files[0]);
     }
   }
 };

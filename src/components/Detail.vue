@@ -11,7 +11,7 @@
         >
           <span
             class="name"
-            :style="{fontSize,color}"
+            :style="{fontSize:words.fontSize,color}"
           >{{words.curItem.name}}</span>
         </div>
         <div class="name-value-reset">
@@ -52,11 +52,11 @@ export default {
     }
   },
   data() {
+    let words = new Word(this.storeName);
     return {
-      words: new Word(this.storeName),
+      words,
       offset: 0,
-      color: getColor(),
-      fontSize: this.getFontSize()
+      color: getColor()
     };
   },
   methods: {
@@ -75,20 +75,17 @@ export default {
     up() {
       if (this.offset < -50 && this.words.getNext()) {
         this.words.getNextToCurrent();
-        this.fontSize = this.getFontSize();
+        // this.fontSize = this.words.getFontSize();
         this.color = getColor();
         this.offset = 0;
       } else if (this.offset > 50 && this.words.getPrev()) {
         this.words.getPrevToCurrent();
-        this.fontSize = this.getFontSize();
+        // this.fontSize = this.words.getFontSize();
         this.color = getColor();
         this.offset = 0;
       } else {
         this.offset = 0;
       }
-    },
-    getFontSize() {
-      return 15 + Math.floor(Math.random() * 70) + "vw";
     },
     del() {
       if (confirm("Delete?")) {

@@ -12,6 +12,7 @@
           <div @click="todo">todo</div>
           <div @click="eng">爸爸英语</div>
           <div @click="Login">Login</div>
+          <div @click="listen">Listen</div>
         </section>
       </div>
       <div>
@@ -21,7 +22,6 @@
           <div @click="cnWord">语文</div>
           <div @click="engWord">英语单词</div>
           <div>英语句子</div>
-          <div @click="listen">Listen</div>
           <div>6</div>
         </section>
       </div>

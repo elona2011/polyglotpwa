@@ -1,4 +1,4 @@
-import { openMyDB, getList } from "./db/db";
+import { addValue, getList } from "./db/db";
 
 export default class List {
   constructor({ storeName, indexName, direction }) {
@@ -11,6 +11,10 @@ export default class List {
   async getList() {
     this.list = await getList(this.storeName, this.direction, this.indexName)
     return this.list
+  }
+  async add(val) {
+    await addValue(this.storeName, val)
+    await this.getList()
   }
   setCurrent(item) {
     return this.curItem = item && item.id ? item : this.curItem

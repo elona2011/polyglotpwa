@@ -8,7 +8,7 @@
           v-show="isOptionsShow"
         >
           <ul>
-            <li @click="test">edit</li>
+            <li @click="edit">edit</li>
             <li @click="del">delete</li>
           </ul>
         </div>
@@ -39,8 +39,8 @@ export default {
     Detail
   },
   methods: {
-    test() {
-      console.log(13);
+    edit() {
+      this.$router.push({ path: `/listedit/${this.words.storeName}` });
       this.triggerOptions();
     },
     triggerOptions() {

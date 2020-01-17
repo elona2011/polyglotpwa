@@ -1,6 +1,6 @@
 import { openDB } from "idb"
 import upgrade from "./upgrade";
-import { dbName, storeName_config, storeName_mp3, storeName_words, storeName_words_1, storeName_cnWords, storeName_enWords, storeName_enDadWords, storeName_todo, version } from "./config";
+import { dbName, storeName_config, version } from "./config";
 
 export const dbSetConfig = config => {
   config.id = 1
@@ -9,13 +9,6 @@ export const dbSetConfig = config => {
 export const dbGetConfig = async () => {
   let config = await getById(storeName_config, 1)
   return config
-}
-export const addWord = word => addValue(storeName_words, word)
-export const addMp3 = async mp3 => await addValue(storeName_mp3, mp3)
-export const getListWordByForget = async () => {
-  let db = await openMyDB()
-  let index = await db.transaction(storeName_words).objectStore(storeName_words).index('forget')
-  return await index.getAll()
 }
 
 export const getStore = async storeName => {

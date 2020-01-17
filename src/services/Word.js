@@ -12,10 +12,13 @@ export default class Word extends List {
     if (Word[storeName] instanceof Word) {
       return Word[storeName]
     }
-    this.storeName = storeName
     Object.assign(this, getPageConfig(storeName))
+    this.fontSize = "15vw"
     Word[storeName] = this;
-    this.getCurrent();
+    (async () => {
+      await this.getCurrent();
+      this.getFontSize()
+    })()
   }
 
   async getById(id) {
@@ -31,18 +34,13 @@ export default class Word extends List {
       totalNum: 1,
       date: +new Date()
     })
-    await this.getList()
   }
-  async pushCurItem() {
+
+  async editWord(name) {
+    this.curItem.name = name
     await this.add(this.curItem)
   }
-  async add(val) {
-    let db = await openMyDB()
-    const tx = db.transaction(this.storeName, 'readwrite')
-    const store = tx.objectStore(this.storeName)
-    await store.put(val)
-    await tx.done
-  }
+
   async delWord() {
     let id = this.curItem.id
     let item = this.getNext()
@@ -73,5 +71,12 @@ export default class Word extends List {
     await this.add(this.curItem);
     await this.getList()
     this.getNextToCurrent()
+  }
+  getFontSize() {
+    if (this.curItem.name.length === 1) {
+      this.fontSize = 15 + Math.floor(Math.random() * 70) + "vw";
+    } else {
+      this.fontSize = "10vw"
+    }
   }
 }

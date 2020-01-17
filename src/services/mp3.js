@@ -87,11 +87,6 @@ export class Mp3 extends List {
     await this.getList()
   }
 
-  async addMp3(file) {
-    await addValue(this.storeName, file)
-    await this.getList()
-  }
-
   play() {
     this.audio.play()
     this.isPlay = true
