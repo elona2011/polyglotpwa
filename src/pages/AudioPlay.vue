@@ -8,10 +8,7 @@
         <div class="name-value-reset">
           <span class="name">速率</span>
           <span class="value">{{mp3.playbackRate}}</span>
-          <button
-            class="reset"
-            @click="speedReset"
-          >复位</button>
+          <button class="reset" @click="speedReset">复位</button>
         </div>
         <input
           type="range"
@@ -50,7 +47,7 @@
           class="play"
           @click="playStop"
         >{{playText}}</button>
-      </div> -->
+      </div>-->
     </section>
   </div>
 </template>
@@ -59,12 +56,10 @@
 import { Mp3 } from "../services/mp3";
 import TitleBar from "../components/TitleBar";
 
-let mp3 = new Mp3()
-
 export default {
   data() {
     return {
-      mp3,
+      mp3: new Mp3(),
       currentTimeSet: 0,
       isHoldProgressButton: false
     };
@@ -73,22 +68,22 @@ export default {
     TitleBar
   },
   async created() {
-    mp3.playCurItem()
+    this.mp3.playCurItem();
   },
   computed: {
     currentTime() {
-      return this.isHoldProgressButton ? this.currentTimeSet : mp3.currentTime;
+      return this.isHoldProgressButton ? this.currentTimeSet : this.mp3.currentTime;
     }
   },
   methods: {
     changeSpeed(e) {
-      mp3.setPlaybackRate(+e.target.value);
+      this.mp3.setPlaybackRate(+e.target.value);
     },
     speedReset() {
-      mp3.setPlaybackRate(1);
+      this.mp3.setPlaybackRate(1);
     },
     setPlayedTime() {
-      mp3.setCurrentTime(this.currentTimeSet);
+      this.mp3.setCurrentTime(this.currentTimeSet);
     },
     down() {
       this.isHoldProgressButton = true;

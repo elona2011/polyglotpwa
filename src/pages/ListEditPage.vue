@@ -25,8 +25,10 @@ import TitleBar from "../components/TitleBar";
 
 export default {
   data() {
+    let words = new Word(this.$route.params.storeName)
     return {
-      newWord: ""
+      words,
+      newWord: words.curItem.name
     };
   },
   components: {
@@ -35,7 +37,7 @@ export default {
   methods: {
     Add() {
       if (this.newWord) {
-        new Word(this.$route.params.storeName).editWord(this.newWord);
+        this.words.editWord(this.newWord);
         this.$router.go(-1);
       }
     }

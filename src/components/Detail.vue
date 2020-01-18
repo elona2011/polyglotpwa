@@ -9,31 +9,23 @@
           @pointerup="up"
           :style="{transform:'translateX('+offset+'px)'}"
         >
-          <span
-            class="name"
-            :style="{fontSize:words.fontSize,color}"
-          >{{words.curItem.name}}</span>
+          <span class="name" :style="{fontSize:word.fontSize,color}">{{word.curItem.name}}</span>
         </div>
+        <PlayButton v-if="word.curItem.audioFile" :audio="audio"></PlayButton>
         <div class="name-value-reset">
           <span class="name">total:</span>
-          <span class="name">{{words.curItem.totalNum}}</span>
+          <span class="name">{{word.curItem.totalNum}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">forget:</span>
-          <span class="name">{{words.curItem.forgetNum}}</span>
+          <span class="name">{{word.curItem.forgetNum}}</span>
         </div>
       </div>
     </section>
     <section class="play-group">
       <div>
-        <button
-          class="remember"
-          @click="remember"
-        >Remember</button>
-        <button
-          class="forget"
-          @click="forget"
-        >Forget</button>
+        <button class="remember" @click="remember">Remember</button>
+        <button class="forget" @click="forget">Forget</button>
       </div>
     </section>
   </div>
@@ -42,6 +34,8 @@
 <script>
 import Word from "../services/Word";
 import { getColor } from "../services/color";
+import AudioPlay from "../services/AudioPlay";
+import PlayButton from "../components/PlayButton";
 
 let x;
 export default {
@@ -51,20 +45,28 @@ export default {
       required: true
     }
   },
+  components: {
+    PlayButton
+  },
   data() {
-    let words = new Word(this.storeName);
+    let word = new Word(this.storeName);
     return {
-      words,
+      word,
       offset: 0,
       color: getColor()
     };
   },
+  computed: {
+    audio() {
+      return new AudioPlay({file:this.word.curItem.audioFile})
+    }
+  },
   methods: {
     remember() {
-      this.words.remember();
+      this.word.remember();
     },
     forget() {
-      this.words.forget();
+      this.word.forget();
     },
     down(e) {
       x = e.x;
@@ -73,14 +75,14 @@ export default {
       this.offset = e.x - x;
     },
     up() {
-      if (this.offset < -50 && this.words.getNext()) {
-        this.words.getNextToCurrent();
-        // this.fontSize = this.words.getFontSize();
+      if (this.offset < -50 && this.word.getNext()) {
+        this.word.getNextToCurrent();
+        // this.fontSize = this.word.getFontSize();
         this.color = getColor();
         this.offset = 0;
-      } else if (this.offset > 50 && this.words.getPrev()) {
-        this.words.getPrevToCurrent();
-        // this.fontSize = this.words.getFontSize();
+      } else if (this.offset > 50 && this.word.getPrev()) {
+        this.word.getPrevToCurrent();
+        // this.fontSize = this.word.getFontSize();
         this.color = getColor();
         this.offset = 0;
       } else {
@@ -89,7 +91,7 @@ export default {
     },
     del() {
       if (confirm("Delete?")) {
-        this.words.delWord();
+        this.word.delWord();
       }
     }
   }

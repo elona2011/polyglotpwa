@@ -1,6 +1,7 @@
 import { openMyDB } from "./db/db";
 import List from "./List";
 import { getPageConfig } from "../config";
+import AudioPlay from "./AudioPlay";
 
 export default class Word extends List {
   constructor(storeName) {
@@ -14,6 +15,7 @@ export default class Word extends List {
     }
     Object.assign(this, getPageConfig(storeName))
     this.fontSize = "15vw"
+    this.audio = {}
     Word[storeName] = this;
     (async () => {
       await this.getCurrent();
@@ -27,9 +29,11 @@ export default class Word extends List {
     let store = tx.objectStore(this.storeName)
     return await store.get(id)
   }
-  async addWord(word) {
+
+  async addWord({ name, audioFile }) {
     await this.add({
-      name: word,
+      name,
+      audioFile,
       forgetNum: 1,
       totalNum: 1,
       date: +new Date()
@@ -47,14 +51,7 @@ export default class Word extends List {
     if (!item) item = this.getPrev()
     if (!item) item = {}
     this.setCurrent(item)
-
-    let db = await openMyDB()
-    const tx = db.transaction(this.storeName, 'readwrite')
-    const store = await tx.objectStore(this.storeName)
-
-    await store.delete(id)
-    await tx.done
-    await this.getList()
+    this.delById(id)
     return item
   }
   async remember() {
@@ -78,5 +75,6 @@ export default class Word extends List {
     } else {
       this.fontSize = "10vw"
     }
+    return this.fontSize
   }
 }

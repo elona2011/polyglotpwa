@@ -1,5 +1,6 @@
 import { delById, addValue, dbSetConfig, dbGetConfig } from "./db/db";
 import List from "./List";
+import AudioPlay from "./AudioPlay";
 
 export class Mp3 extends List {
   constructor() {
@@ -9,13 +10,13 @@ export class Mp3 extends List {
     }
     Mp3.instance = this
     this.isInit = false
-    this.isPlay = false
     this.name = ''
     this.index = 0
     this.playbackRate = 1
     this.currentTime = 0
     this.duration = 0
     this.isAllLoop = false
+    this.isPlay = false
     this.file = {}
 
     this.getCurrent();
@@ -33,26 +34,22 @@ export class Mp3 extends List {
       this.file = file
       this.name = file.name
       this.isPlay = false
-      if (!this.audio) {
-        this.audio = new Audio()
-        this.audio.addEventListener("loadedmetadata", () => {
-          this.duration = this.audio.duration;
+      this.audioPlay = new AudioPlay({
+        file,
+        playbackRate: this.playbackRate,
+        onloadedmetadata: () => {
+          this.duration = this.audioPlay.duration
           dbSetConfig(this.config)
-        });
-        this.audio.addEventListener("timeupdate", () => {
-          this.currentTime = this.audio.currentTime
+        },
+        ontimeupdate: (t) => {
+          this.currentTime = t
           dbSetConfig(this.config)
-        });
-        this.audio.addEventListener("ended", () => {
-          this.playNext()
-        });
-      }
-      this.objectURL = URL.createObjectURL(file)
-      this.audio.src = this.objectURL
+        },
+        onend: () => this.playNext()
+      })
       if (!this.isAllLoop) {
-        this.audio.loop = true
+        this.audioPlay.loop = true
       }
-      this.audio.playbackRate = this.playbackRate
       dbSetConfig(this.config)
     }
   }
@@ -63,41 +60,28 @@ export class Mp3 extends List {
   }
 
   setCurrentTime(t) {
-    if (this.audio) {
-      this.audio.currentTime = t
+    if (this.audioPlay) {
+      this.audioPlay.currentTime = t
     }
   }
   setPlaybackRate(t) {
-    if (this.audio) {
-      this.audio.playbackRate = this.playbackRate = t
+    if (this.audioPlay) {
+      this.audioPlay.playbackRate = this.playbackRate = t
     }
     dbSetConfig(this.config)
   }
 
   setAllLoop() {
     this.isAllLoop = !this.isAllLoop
-    if (this.audio) {
-      this.audio.loop = !this.isAllLoop
+    if (this.audioPlay) {
+      this.audioPlay.loop = !this.isAllLoop
     }
     dbSetConfig(this.config)
   }
 
-  async delMp3ById(id) {
-    await delById(this.storeName, id)
-    await this.getList()
-  }
-
-  play() {
-    this.audio.play()
-    this.isPlay = true
-  }
   playNext() {
     this.getNextToCurrent({ isLoop: true })
     this.playCurItem()
-  }
-  pause() {
-    this.audio.pause()
-    this.isPlay = false
   }
 
   async playCurItem() {
@@ -107,11 +91,8 @@ export class Mp3 extends List {
 
   playPauseMp3() {
     if (this.isInit) {
-      if (this.isPlay) {
-        this.pause()
-      } else {
-        this.play()
-      }
+      this.audioPlay.playPauseMp3()
+      this.isPlay = this.audioPlay.isPlay
     } else {
       this.playCurItem()
     }
@@ -120,17 +101,18 @@ export class Mp3 extends List {
   playNewMp3(file) {
     if (file) {
       this.init(file)
-      this.play()
+      this.audioPlay.play()
+      this.isPlay = this.audioPlay.isPlay
     }
   }
 
   get config() {
     return {
-      playbackRate: this.playbackRate,
-      currentTime: this.currentTime,
-      duration: this.duration,
+      playbackRate: this.audioPlay.playbackRate,
+      currentTime: this.audioPlay.currentTime,
+      duration: this.audioPlay.duration,
       isAllLoop: this.isAllLoop,
-      file: this.file,
+      file: this.audioPlay.file || {},
       index: this.index
     }
   }

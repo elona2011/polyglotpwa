@@ -36,7 +36,7 @@ export const addValue = async (storeName, val) => {
   await tx.done
 }
 
-const delById = async (storeName, id) => {
+export const delById = async (storeName, id) => {
   let db = await openMyDB()
   const tx = db.transaction(storeName, 'readwrite')
   const store = await tx.objectStore(storeName)

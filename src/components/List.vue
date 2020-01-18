@@ -73,7 +73,7 @@ export default {
       if (this.li) {
         let rect = this.li.getBoundingClientRect();
         if (Math.abs(this.offset) > rect.width / 2) {
-          this.dataObj.delMp3ById(item.id);
+          this.dataObj.delById(item.id);
           // this.list = await mp3.getMp3List();
         } else {
           this.li.setAttribute("style", ``);

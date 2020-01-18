@@ -13,15 +13,8 @@
             <span class="middle">Listen</span>
           </li>
           <li class="play">
-            <span
-              :class="{'icon-play':!isPlay,'icon-pause':isPlay,'play-icon':true}"
-              @click="PlayClick"
-            ></span>
-            <span
-              class="icon-loop play-icon"
-              @click="setLoop"
-              :style="{color:isAllLoop}"
-            ></span>
+            <PlayButton :audio="mp3"></PlayButton>
+            <span class="icon-loop play-icon" @click="setLoop" :style="{color:isAllLoop}"></span>
           </li>
         </ul>
       </nav>
@@ -31,12 +24,20 @@
 
 <script>
 import { Mp3 } from "./services/mp3";
+import PlayButton from "./components/PlayButton";
 
-let mp3 = new Mp3();
 export default {
   data() {
     return {
-      mp3
+      mp3:new Mp3()
+    };
+  },
+  components:{
+    PlayButton
+  },
+  created() {
+    window.oncontextmenu = function() {
+      return false;
     };
   },
   methods: {
@@ -48,17 +49,11 @@ export default {
         this.$router.push({ path: "/play/mp3" });
       }
     },
-    PlayClick() {
-      mp3.playPauseMp3();
-    },
     setLoop() {
-      mp3.setAllLoop();
+      this.mp3.setAllLoop();
     }
   },
   computed: {
-    isPlay() {
-      return this.mp3.isPlay;
-    },
     isAllLoop() {
       return this.mp3.isAllLoop ? "red" : "grey";
     }
