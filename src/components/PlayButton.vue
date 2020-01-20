@@ -1,27 +1,30 @@
 <template>
   <div class="playbutton">
-    <span :class="{'icon-play':!isPlay,'icon-pause':isPlay,'play-icon':true}" @click="PlayClick"></span>
+    <span
+      :class="{'icon-play':!isPlay,'icon-pause':isPlay,'play-icon':true}"
+      @click="PlayClick"
+    ></span>
   </div>
 </template>
 
 <script>
+import AudioPlay from "../services/AudioPlay";
+
 export default {
   props: {
-    audio: {
-      required: true,
+    audioPlay: {
+      type: AudioPlay,
+      required: true
     }
   },
   methods: {
     PlayClick() {
-      this.audio.playPauseMp3();
+      this.audioPlay.playPause();
     }
   },
   computed: {
     isPlay() {
-      return this.audio.isPlay;
-    },
-    isAllLoop() {
-      return this.audio.isAllLoop ? "red" : "grey";
+      return this.audioPlay.isPlay;
     }
   }
 };

@@ -10,7 +10,7 @@
       </div>
       <div class="group-item">
         <span class="name">record:</span>
-        <PlayButton :audio="record.audioPlay"></PlayButton>
+        <PlayButton :audioFile="record.file"></PlayButton>
         <button class="item" @pointerdown="recordStart" @pointerup="recordStop">record</button>
       </div>
     </section>
@@ -53,7 +53,7 @@ export default {
       if (this.newWord) {
         new Word(this.$route.params.storeName).addWord({
           name: this.newWord,
-          audioFile: this.record.audioPlay.file
+          audioFile: this.record.file
         });
         this.$router.go(-1);
       }

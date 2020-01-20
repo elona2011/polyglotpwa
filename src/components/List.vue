@@ -2,9 +2,9 @@
   <section :class="layout">
     <ul>
       <li
-        v-for="item in dataObj.list"
+        v-for="(item,n) in dataObj.list"
         :key="item.id"
-        @click="detail(item)"
+        @click="detail(n)"
         @pointerdown="down($event,item)"
         @pointermove="move($event,item)"
         @pointerup="up($event,item)"
@@ -44,8 +44,8 @@ export default {
     this.dataObj.getList();
   },
   methods: {
-    detail(item) {
-      this.dataObj.setCurrent(item);
+    detail(i) {
+      this.dataObj.setIndex(i);
       this.detailRoute &&
         this.$router.push({
           path: `/${this.detailRoute}/${this.dataObj.storeName}`

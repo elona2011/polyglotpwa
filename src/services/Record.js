@@ -2,7 +2,7 @@ import AudioPlay from "./AudioPlay";
 
 export default class {
   constructor(){
-    this.audioBlob = {}
+    this.file = {}
     this.audioPlay = new AudioPlay
   }
 
@@ -17,9 +17,8 @@ export default class {
     });
 
     this.mediaRecorder.addEventListener("stop", () => {
-      this.audioBlob = new Blob(audioChunks);
-      this.audioPlay = new AudioPlay({ file: this.audioBlob });
-      console.log(this.audioPlay)
+      this.file = new Blob(audioChunks);
+      this.audioPlay = new AudioPlay({ file: this.file });
       // audio.play();
     });
   }

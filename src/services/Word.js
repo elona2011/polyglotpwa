@@ -1,7 +1,6 @@
 import { openMyDB } from "./db/db";
 import List from "./List";
 import { getPageConfig } from "../config";
-import AudioPlay from "./AudioPlay";
 
 export default class Word extends List {
   constructor(storeName) {
@@ -47,12 +46,17 @@ export default class Word extends List {
 
   async delWord() {
     let id = this.curItem.id
-    let item = this.getNext()
-    if (!item) item = this.getPrev()
-    if (!item) item = {}
-    this.setCurrent(item)
+
+    let i
+    if (this.list.length == 1) {
+      i = null
+    } else if (this.index === this.list.length - 1) {
+      i = this.getPrevIndex()
+    } else {
+      i = this.getNextIndex()
+    }
+    this.setIndex(i)
     this.delById(id)
-    return item
   }
   async remember() {
     ++this.curItem.totalNum;
@@ -70,7 +74,8 @@ export default class Word extends List {
     this.getNextToCurrent()
   }
   getFontSize() {
-    if (this.curItem.name.length === 1) {
+    let item = this.list[this.index]
+    if (item && item.name && item.name.length == 1) {
       this.fontSize = 15 + Math.floor(Math.random() * 70) + "vw";
     } else {
       this.fontSize = "10vw"

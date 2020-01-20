@@ -28,7 +28,7 @@ export const getPageConfig = pageName => {
       layout: 'inline'
     },
     [storeName_enDadWords]: {
-      title: 'eng',
+      title: 'dadEng',
       storeName: storeName_enDadWords,
       layout: 'inline',
       fontSize: '10vh'

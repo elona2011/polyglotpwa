@@ -13,8 +13,12 @@
             <span class="middle">Listen</span>
           </li>
           <li class="play">
-            <PlayButton :audio="mp3"></PlayButton>
-            <span class="icon-loop play-icon" @click="setLoop" :style="{color:isAllLoop}"></span>
+            <PlayButton :audioPlay="audioPlay"></PlayButton>
+            <span
+              class="icon-loop play-icon"
+              @click="setLoop"
+              :style="{color:isAllLoop}"
+            ></span>
           </li>
         </ul>
       </nav>
@@ -23,16 +27,19 @@
 </template>
 
 <script>
-import { Mp3 } from "./services/mp3";
+import AudioList from "./services/AudioList";
+import AudioPlay from "./services/AudioPlay";
 import PlayButton from "./components/PlayButton";
 
 export default {
   data() {
+    let audioPlay = new AudioPlay();
     return {
-      mp3:new Mp3()
+      audioPlay,
+      mp3: new AudioList(audioPlay)
     };
   },
-  components:{
+  components: {
     PlayButton
   },
   created() {

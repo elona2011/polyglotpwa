@@ -9,9 +9,15 @@
           @pointerup="up"
           :style="{transform:'translateX('+offset+'px)'}"
         >
-          <span class="name" :style="{fontSize:word.fontSize,color}">{{word.curItem.name}}</span>
+          <span
+            class="name"
+            :style="{fontSize:word.fontSize,color}"
+          >{{word.curItem.name}}</span>
         </div>
-        <PlayButton v-if="word.curItem.audioFile" :audio="audio"></PlayButton>
+        <PlayButton
+          v-if="word.curItem.audioFile"
+          :audioPlay="audio"
+        ></PlayButton>
         <div class="name-value-reset">
           <span class="name">total:</span>
           <span class="name">{{word.curItem.totalNum}}</span>
@@ -24,8 +30,14 @@
     </section>
     <section class="play-group">
       <div>
-        <button class="remember" @click="remember">Remember</button>
-        <button class="forget" @click="forget">Forget</button>
+        <button
+          class="remember"
+          @click="remember"
+        >Remember</button>
+        <button
+          class="forget"
+          @click="forget"
+        >Forget</button>
       </div>
     </section>
   </div>
@@ -34,8 +46,8 @@
 <script>
 import Word from "../services/Word";
 import { getColor } from "../services/color";
-import AudioPlay from "../services/AudioPlay";
 import PlayButton from "../components/PlayButton";
+import AudioPlay from "../services/AudioPlay";
 
 let x;
 export default {
@@ -58,7 +70,7 @@ export default {
   },
   computed: {
     audio() {
-      return new AudioPlay({file:this.word.curItem.audioFile})
+      return new AudioPlay({ file: this.word.curItem.audioFile });
     }
   },
   methods: {
@@ -75,12 +87,12 @@ export default {
       this.offset = e.x - x;
     },
     up() {
-      if (this.offset < -50 && this.word.getNext()) {
+      if (this.offset < -50) {
         this.word.getNextToCurrent();
         // this.fontSize = this.word.getFontSize();
         this.color = getColor();
         this.offset = 0;
-      } else if (this.offset > 50 && this.word.getPrev()) {
+      } else if (this.offset > 50) {
         this.word.getPrevToCurrent();
         // this.fontSize = this.word.getFontSize();
         this.color = getColor();

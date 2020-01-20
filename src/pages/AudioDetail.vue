@@ -53,13 +53,13 @@
 </template>
 
 <script>
-import { Mp3 } from "../services/mp3";
+import AudioList from "../services/AudioList";
 import TitleBar from "../components/TitleBar";
 
 export default {
   data() {
     return {
-      mp3: new Mp3(),
+      mp3: new AudioList(),
       currentTimeSet: 0,
       isHoldProgressButton: false
     };

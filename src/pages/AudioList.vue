@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import { Mp3 } from "../services/mp3";
+import AudioList from "../services/AudioList";
 import TitleBar from "../components/TitleBar";
 import List from "../components/List";
 
 export default {
   data() {
     return {
-      mp3: new Mp3()
+      mp3: new AudioList()
     };
   },
   components: {

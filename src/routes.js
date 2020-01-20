@@ -1,6 +1,6 @@
 import Home from "./pages/Home.vue";
 import AudioList from "./pages/AudioList.vue";
-import AudioPlay from "./pages/AudioPlay.vue";
+import AudioDetail from "./pages/AudioDetail.vue";
 import Login from "./pages/Login.vue";
 import ListPage from "./pages/ListPage.vue";
 import ListAddPage from "./pages/ListAddPage.vue";
@@ -39,6 +39,6 @@ export default [
   }, {
     name: 'play',
     path: '/play/:storeName',
-    component: AudioPlay
+    component: AudioDetail
   }
 ]
