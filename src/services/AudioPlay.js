@@ -24,7 +24,6 @@ export default class AudioPlay {
     });
     this.isPlay = false
     if (file) {
-      this.file = file
       this.src = file
       this.audio.playbackRate = playbackRate
     }
@@ -82,7 +81,8 @@ export default class AudioPlay {
   //   }
   // }
   set src(file) {
-    if (file) {
+    debugger
+    if (file && this.file !== file) {
       this.file = file
       this.objectURL = URL.createObjectURL(file)
       this.audio.src = this.objectURL

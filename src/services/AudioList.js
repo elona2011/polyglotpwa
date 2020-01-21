@@ -38,25 +38,28 @@ export default class AudioList extends List {
       let config = await dbGetConfig()
       if (config) {
         AudioList.instance = Object.assign(this, config)
+        this.audioPlay.index = this.index
         this.audioPlay.src = this.list[this.index]
         this.audioPlay.playbackRate = this.playbackRate
         // debugger
       }
-    })()
+    })();
+    (async () => {
+    })();
   }
 
-  init(file) {
-    this.isInit = true
-    this.file = file
-    this.name = file.name
-    this.audioPlay.src = file
-    this.audioPlay.playbackRate = this.playbackRate
-    this.isPlay = false
-    if (!this.isAllLoop) {
-      this.audioPlay.loop = true
-    }
-    dbSetConfig(this.config)
-  }
+  // init(file) {
+  //   this.isInit = true
+  //   this.file = file
+  //   this.name = file.name
+  //   this.audioPlay.src = file
+  //   this.audioPlay.playbackRate = this.playbackRate
+  //   this.isPlay = false
+  //   if (!this.isAllLoop) {
+  //     this.audioPlay.loop = true
+  //   }
+  //   dbSetConfig(this.config)
+  // }
 
   insertAudio(file) {
     this.lastConfig = this.config
@@ -100,6 +103,9 @@ export default class AudioList extends List {
     this.playCurItem()
   }
 
+  playCurItemSync() {
+    this.playNewMp3(this.curItem)
+  }
   async playCurItem() {
     await this.getCurrent()
     this.playNewMp3(this.curItem)
@@ -118,8 +124,8 @@ export default class AudioList extends List {
 
   playNewMp3(file) {
     if (file) {
-      this.init(file)
-      this.audioPlay.play()
+      // this.init(file)
+      this.audioPlay.play(file)
       this.isPlay = this.audioPlay.isPlay
     }
   }
