@@ -27,7 +27,6 @@ export default class List {
   }
   async getCurrent() {
     await this.getList()
-    debugger
     return this.curItem = this.list[this.index]
   }
   // isCurItemEmpty() {

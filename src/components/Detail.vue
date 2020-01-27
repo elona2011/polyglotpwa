@@ -10,14 +10,12 @@
           :style="{transform:'translateX('+offset+'px)'}"
         >
           <span
-            class="name"
-            :style="{fontSize:word.fontSize,color}"
+            class="mainword"
+            :class="classObject"
+            :style="{fontSize,color}"
           >{{word.curItem.name}}</span>
         </div>
-        <PlayButton
-          v-if="word.curItem.audioFile"
-          :audioPlay="audio"
-        ></PlayButton>
+        <PlayButton v-if="word.curItem.audioFile" :audioPlay="audioPlay" fontsize="20vw"></PlayButton>
         <div class="name-value-reset">
           <span class="name">total:</span>
           <span class="name">{{word.curItem.totalNum}}</span>
@@ -28,16 +26,11 @@
         </div>
       </div>
     </section>
+
     <section class="play-group">
       <div>
-        <button
-          class="remember"
-          @click="remember"
-        >Remember</button>
-        <button
-          class="forget"
-          @click="forget"
-        >Forget</button>
+        <button class="remember" @click="remember">Remember</button>
+        <button class="forget" @click="forget">Forget</button>
       </div>
     </section>
   </div>
@@ -45,9 +38,10 @@
 
 <script>
 import Word from "../services/Word";
-import { getColor } from "../services/color";
+import { getColor, getRotateZ, getFontSize } from "../services/color";
 import PlayButton from "../components/PlayButton";
 import AudioPlay from "../services/AudioPlay";
+import AudioList from "../services/AudioList";
 
 let x;
 export default {
@@ -63,17 +57,29 @@ export default {
   data() {
     let word = new Word(this.storeName);
     return {
+      audioPlay: new AudioPlay(),
       word,
       offset: 0,
-      color: getColor()
+      color: getColor(),
+      transform: getRotateZ(),
+      fontSize: getFontSize(),
+      classObject: this.setAnimation()
     };
   },
-  computed: {
-    audio() {
-      return new AudioPlay({ file: this.word.curItem.audioFile });
-    }
+  async mounted() {
+    await this.word.getCurrent();
+    let mp3 = new AudioList();
+    this.audioPlay.src = this.word.curItem.audioFile;
+    mp3.insertAudio(this.audioPlay)
   },
   methods: {
+    setAnimation() {
+      let pro = ["shake", "skew", "skew2", "roll", ""];
+      let num = Math.floor(Math.random() * pro.length);
+      return {
+        [pro[num]]: true
+      };
+    },
     remember() {
       this.word.remember();
     },
@@ -91,11 +97,17 @@ export default {
         this.word.getNextToCurrent();
         // this.fontSize = this.word.getFontSize();
         this.color = getColor();
+        this.transform = getRotateZ();
+        this.fontSize = getFontSize(this.word.curItem.name);
+        this.classObject = this.setAnimation();
         this.offset = 0;
       } else if (this.offset > 50) {
         this.word.getPrevToCurrent();
         // this.fontSize = this.word.getFontSize();
         this.color = getColor();
+        this.transform = getRotateZ();
+        this.fontSize = getFontSize(this.word.curItem.name);
+        this.classObject = this.setAnimation();
         this.offset = 0;
       } else {
         this.offset = 0;
@@ -112,6 +124,39 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@keyframes skew {
+  0% {
+    transform: skewX(20deg);
+  }
+  100% {
+    transform: skewX(-20deg);
+  }
+}
+@keyframes shake {
+  0% {
+    transform: skewY(20deg);
+  }
+  100% {
+    transform: skewY(-20deg);
+  }
+}
+@keyframes skew2 {
+  0% {
+    transform: skew(20deg, 20deg);
+  }
+  100% {
+    transform: skew(-20deg, -20deg);
+  }
+}
+@keyframes roll {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .detail {
   height: 100%;
   display: flex;
@@ -141,14 +186,25 @@ div section.play-group {
 }
 .word {
   flex: 1;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   touch-action: pan-y;
 }
-.word .name {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.word > .mainword {
+  animation-direction: alternate;
+}
+.shake {
+  animation: shake 1s infinite;
+}
+.skew {
+  animation: skew 1s infinite;
+}
+.skew2 {
+  animation: skew2 1s infinite;
+}
+.roll {
+  animation: roll 2s infinite;
 }
 .name-value-reset {
   display: flex;

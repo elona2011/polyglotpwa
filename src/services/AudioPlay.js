@@ -6,21 +6,10 @@ export default class AudioPlay {
     });
     this.audio.addEventListener("timeupdate", e => {
       this.cbs.ontimeupdate.forEach(n => n(e))
-      // ontimeupdate && ontimeupdate(this.audio.currentTime)
     });
     this.audio.addEventListener("ended", e => {
+      this.isPlay = false
       this.cbs.onend.forEach(n => n(e))
-      // this.isPlay = false
-      // if (this.lastConfig) {
-      //   this.src = this.lastConfig.file
-      //   this.audio.playbackRate = this.lastConfig.playbackRate
-      //   this.audio.currentTime = this.lastConfig.currentTime
-      //   this.audio.loop = this.lastConfig.loop
-      //   this.lastConfig = null
-      //   this.play()
-      // } else {
-      //   onend && onend()
-      // }
     });
     this.isPlay = false
     if (file) {
@@ -30,7 +19,8 @@ export default class AudioPlay {
     this.cbs = {
       onloadedmetadata: [],
       ontimeupdate: [],
-      onend: []
+      onend: [],
+      onplay: [],
     }
   }
 
@@ -42,6 +32,9 @@ export default class AudioPlay {
   }
   onend(fn) {
     this.cbs.onend.push(fn)
+  }
+  onplay(fn) {
+    this.cbs.onplay.push(fn)
   }
 
   destroy() {
@@ -57,6 +50,7 @@ export default class AudioPlay {
       this.audio.play()
       this.isPlay = true
     }
+    this.cbs.onplay.forEach(n=>n())
   }
 
   pause() {
@@ -72,16 +66,7 @@ export default class AudioPlay {
     }
   }
 
-  // get config() {
-  //   return {
-  //     playbackRate: this.audio.playbackRate,
-  //     currentTime: this.audio.currentTime,
-  //     loop: this.audio.loop,
-  //     file: this.file
-  //   }
-  // }
   set src(file) {
-    debugger
     if (file && this.file !== file) {
       this.file = file
       this.objectURL = URL.createObjectURL(file)

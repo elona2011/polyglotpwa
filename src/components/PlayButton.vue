@@ -1,8 +1,9 @@
 <template>
   <div class="playbutton">
     <span
-      :class="{'icon-play':!isPlay,'icon-pause':isPlay,'play-icon':true}"
+      :class="{'icon-play':!isPlay,'icon-pause':isPlay}"
       @click="PlayClick"
+      :style="{'font-size':fontsize}"
     ></span>
   </div>
 </template>
@@ -15,6 +16,10 @@ export default {
     audioPlay: {
       type: AudioPlay,
       required: true
+    },
+    fontsize: {
+      type: String,
+      default: "8vw"
     }
   },
   methods: {

@@ -68,11 +68,18 @@ export default {
     TitleBar
   },
   async created() {
-    this.mp3.playCurItem();
+    // if (!this.mp3.audioPlay.isPlay) {
+    // this.mp3.playInit();
+    // }
+    if (this.mp3.reload) {
+      this.mp3.playCurItem();
+    }
   },
   computed: {
     currentTime() {
-      return this.isHoldProgressButton ? this.currentTimeSet : this.mp3.currentTime;
+      return this.isHoldProgressButton
+        ? this.currentTimeSet
+        : this.mp3.currentTime;
     }
   },
   methods: {

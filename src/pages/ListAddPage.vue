@@ -10,7 +10,7 @@
       </div>
       <div class="group-item">
         <span class="name">record:</span>
-        <PlayButton :audioFile="record.file"></PlayButton>
+        <PlayButton :audioPlay="record.audioPlay"></PlayButton>
         <button class="item" @pointerdown="recordStart" @pointerup="recordStop">record</button>
       </div>
     </section>
@@ -27,6 +27,7 @@ import Word from "../services/Word";
 import TitleBar from "../components/TitleBar";
 import PlayButton from "../components/PlayButton";
 import Record from "../services/Record";
+import AudioPlay from "../services/AudioPlay";
 
 export default {
   data() {

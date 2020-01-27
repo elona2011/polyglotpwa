@@ -2,7 +2,7 @@ import AudioPlay from "./AudioPlay";
 
 export default class {
   constructor(){
-    this.file = {}
+    this.file = null
     this.audioPlay = new AudioPlay
   }
 

@@ -121,7 +121,7 @@ body {
   height: 100%;
 }
 section {
-  flex: 12;
+  flex: 11;
   overflow-y: scroll;
 }
 footer {

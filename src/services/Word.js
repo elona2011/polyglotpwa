@@ -18,7 +18,6 @@ export default class Word extends List {
     Word[storeName] = this;
     (async () => {
       await this.getCurrent();
-      this.getFontSize()
     })()
   }
 
@@ -33,7 +32,7 @@ export default class Word extends List {
     await this.add({
       name,
       audioFile,
-      forgetNum: 1,
+      forgetNum: 10,
       totalNum: 1,
       date: +new Date()
     })
@@ -63,23 +62,14 @@ export default class Word extends List {
     this.curItem.forgetNum =
       this.curItem.forgetNum <= 0 ? 0 : --this.curItem.forgetNum;
     await this.add(this.curItem);
-    await this.getList()
+    // await this.getList()
     this.getNextToCurrent()
   }
   async forget() {
     ++this.curItem.totalNum;
-    ++this.curItem.forgetNum;
+    this.curItem.forgetNum += 5;
     await this.add(this.curItem);
-    await this.getList()
+    // await this.getList()
     this.getNextToCurrent()
-  }
-  getFontSize() {
-    let item = this.list[this.index]
-    if (item && item.name && item.name.length == 1) {
-      this.fontSize = 15 + Math.floor(Math.random() * 70) + "vw";
-    } else {
-      this.fontSize = "10vw"
-    }
-    return this.fontSize
   }
 }
