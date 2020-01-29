@@ -50,7 +50,7 @@ export default class AudioPlay {
       this.audio.play()
       this.isPlay = true
     }
-    this.cbs.onplay.forEach(n=>n())
+    this.cbs.onplay.forEach(n => n())
   }
 
   pause() {
@@ -67,7 +67,7 @@ export default class AudioPlay {
   }
 
   set src(file) {
-    if (file && this.file !== file) {
+    if (file && (file instanceof Blob || file instanceof File) && this.file !== file) {
       this.file = file
       this.objectURL = URL.createObjectURL(file)
       this.audio.src = this.objectURL

@@ -4,7 +4,6 @@ import AudioDetail from "./pages/AudioDetail.vue";
 import Login from "./pages/Login.vue";
 import ListPage from "./pages/ListPage.vue";
 import ListAddPage from "./pages/ListAddPage.vue";
-import ListEditPage from "./pages/ListEditPage.vue";
 import ListDetailPage from "./pages/ListDetailPage.vue";
 
 export default [
@@ -27,7 +26,7 @@ export default [
   }, {
     name: 'listedit',
     path: '/listedit/:storeName',
-    component: ListEditPage
+    component: ListAddPage
   }, {
     name: 'listdetail',
     path: '/listdetail/:storeName',

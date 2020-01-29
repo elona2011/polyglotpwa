@@ -9,6 +9,14 @@
         <input class="item" type="text" name id="newWord" v-model="newWord" />
       </div>
       <div class="group-item">
+        <span class="name">exp1:</span>
+        <input class="item" type="text" name id="exp1" v-model="exp1" />
+      </div>
+      <div class="group-item">
+        <span class="name">exp2:</span>
+        <input class="item" type="text" name id="exp2" v-model="exp2" />
+      </div>
+      <div class="group-item">
         <span class="name">record:</span>
         <PlayButton :audioPlay="record.audioPlay"></PlayButton>
         <button class="item" @pointerdown="recordStart" @pointerup="recordStop">record</button>
@@ -31,10 +39,16 @@ import AudioPlay from "../services/AudioPlay";
 
 export default {
   data() {
+    let word = new Word(this.$route.params.storeName);
+    let isEdit = false;
+    if (this.$route.name === "listedit") isEdit = true;
     return {
-      word: new Word(this.$route.params.storeName),
+      isEdit,
+      word,
       record: new Record(),
-      newWord: ""
+      newWord: isEdit ? word.curItem.name : "",
+      exp1: isEdit ? word.curItem.exp && word.curItem.exp[0] : "",
+      exp2: isEdit ? word.curItem.exp && word.curItem.exp[1] : ""
     };
   },
   components: {
@@ -52,10 +66,26 @@ export default {
     },
     Add() {
       if (this.newWord) {
-        new Word(this.$route.params.storeName).addWord({
-          name: this.newWord,
-          audioFile: this.record.file
-        });
+        let exp = [];
+        if (this.exp1) {
+          exp.push(this.exp1);
+        }
+        if (this.exp2) {
+          exp.push(this.exp2);
+        }
+        if (this.isEdit) {
+          this.word.editWord({
+            name: this.newWord,
+            audioFile: this.record.file,
+            exp
+          });
+        } else {
+          this.word.addWord({
+            name: this.newWord,
+            audioFile: this.record.file,
+            exp
+          });
+        }
         this.$router.go(-1);
       }
     }

@@ -1,4 +1,4 @@
-import { storeName_cnWords, storeName_words, storeName_words_1, storeName_todo, storeName_enWords, storeName_enDadWords } from "./services/db/config";
+import { storeName_enSentences, storeName_cnWords, storeName_words, storeName_words_1, storeName_todo, storeName_enWords, storeName_enDadWords } from "./services/db/config";
 
 export const getPageConfig = pageName => {
   return {
@@ -25,6 +25,11 @@ export const getPageConfig = pageName => {
     [storeName_enWords]: {
       title: 'eng',
       storeName: storeName_enWords,
+      layout: 'inline'
+    },
+    [storeName_enSentences]: {
+      title: 'enSentences',
+      storeName: storeName_enSentences,
       layout: 'inline'
     },
     [storeName_enDadWords]: {

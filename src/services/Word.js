@@ -18,6 +18,7 @@ export default class Word extends List {
     Word[storeName] = this;
     (async () => {
       await this.getCurrent();
+      this.title += `(${this.list.length})`
     })()
   }
 
@@ -28,18 +29,21 @@ export default class Word extends List {
     return await store.get(id)
   }
 
-  async addWord({ name, audioFile }) {
+  async addWord({ name, audioFile, exp }) {
     await this.add({
       name,
       audioFile,
+      exp,
       forgetNum: 10,
       totalNum: 1,
       date: +new Date()
     })
   }
 
-  async editWord(name) {
+  async editWord({ name, audioFile, exp }) {
     this.curItem.name = name
+    this.curItem.audioFile = audioFile
+    this.curItem.exp = exp
     await this.add(this.curItem)
   }
 
@@ -55,21 +59,19 @@ export default class Word extends List {
       i = this.getNextIndex()
     }
     this.setIndex(i)
-    this.delById(id)
+    await this.delById(id)
   }
   async remember() {
     ++this.curItem.totalNum;
     this.curItem.forgetNum =
       this.curItem.forgetNum <= 0 ? 0 : --this.curItem.forgetNum;
-    await this.add(this.curItem);
-    // await this.getList()
+    await this.addValue(this.curItem);
     this.getNextToCurrent()
   }
   async forget() {
     ++this.curItem.totalNum;
     this.curItem.forgetNum += 5;
-    await this.add(this.curItem);
-    // await this.getList()
+    await this.addValue(this.curItem);
     this.getNextToCurrent()
   }
 }

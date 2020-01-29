@@ -3,10 +3,7 @@
     <header>
       <TitleBar title="New Word">
         <strong @click="triggerOptions">...</strong>
-        <div
-          class="options"
-          v-show="isOptionsShow"
-        >
+        <div class="options" v-show="isOptionsShow">
           <ul>
             <li @click="edit">edit</li>
             <li @click="del">delete</li>
@@ -36,7 +33,7 @@ export default {
   },
   components: {
     TitleBar,
-    Detail,
+    Detail
   },
   methods: {
     edit() {
@@ -46,9 +43,12 @@ export default {
     triggerOptions() {
       this.isOptionsShow = !this.isOptionsShow;
     },
-    del() {
+    async del() {
       if (confirm("Delete?")) {
-        this.words.delWord();
+        await this.words.delWord();
+        if (!this.words.curItem) {
+          this.$router.push({ path: `/list/${this.words.storeName}` });
+        }
       }
       this.triggerOptions();
     }

@@ -1,28 +1,37 @@
 <template>
   <div class="detail">
     <section class="setup-group">
-      <div class="group-item">
-        <div
-          class="word"
-          @pointerdown="down"
-          @pointermove="move"
-          @pointerup="up"
-          :style="{transform:'translateX('+offset+'px)'}"
-        >
+      <div
+        class="group-item"
+        @pointerdown="down"
+        @pointermove="move"
+        @pointerup="up"
+        :style="{transform:'translateX('+offset+'px)'}"
+      >
+        <div class="word">
           <span
             class="mainword"
             :class="classObject"
             :style="{fontSize,color}"
-          >{{word.curItem.name}}</span>
+          >{{word.curItem&&word.curItem.name}}</span>
         </div>
-        <PlayButton v-if="word.curItem.audioFile" :audioPlay="audioPlay" fontsize="20vw"></PlayButton>
+        <PlayButton
+          v-if="word.curItem&&word.curItem.audioFile"
+          :audioPlay="audioPlay"
+          fontsize="20vw"
+        ></PlayButton>
+        <div class="example" v-if="word.curItem&&word.curItem.exp&&word.curItem.exp.length">
+          <ul>
+            <li v-for="(item,n) in word.curItem.exp" :key="n">{{item}}</li>
+          </ul>
+        </div>
         <div class="name-value-reset">
           <span class="name">total:</span>
-          <span class="name">{{word.curItem.totalNum}}</span>
+          <span class="name">{{word.curItem&&word.curItem.totalNum}}</span>
         </div>
         <div class="name-value-reset">
           <span class="name">forget:</span>
-          <span class="name">{{word.curItem.forgetNum}}</span>
+          <span class="name">{{word.curItem&&word.curItem.forgetNum}}</span>
         </div>
       </div>
     </section>
@@ -69,16 +78,20 @@ export default {
   async mounted() {
     await this.word.getCurrent();
     let mp3 = new AudioList();
-    this.audioPlay.src = this.word.curItem.audioFile;
-    mp3.insertAudio(this.audioPlay)
+    this.audioPlay.src = this.word.curItem && this.word.curItem.audioFile;
+    mp3.insertAudio(this.audioPlay);
   },
   methods: {
     setAnimation() {
-      let pro = ["shake", "skew", "skew2", "roll", ""];
-      let num = Math.floor(Math.random() * pro.length);
-      return {
-        [pro[num]]: true
-      };
+      if (this.storeName === "words") {
+        let pro = ["shake", "skew", "skew2", "roll", ""];
+        let num = Math.floor(Math.random() * pro.length);
+        return {
+          [pro[num]]: true
+        };
+      } else {
+        return {};
+      }
     },
     remember() {
       this.word.remember();
@@ -93,30 +106,19 @@ export default {
       this.offset = e.x - x;
     },
     up() {
-      if (this.offset < -50) {
-        this.word.getNextToCurrent();
-        // this.fontSize = this.word.getFontSize();
+      if (this.offset < -50 || this.offset > 50) {
+        if (this.offset < -50) {
+          this.word.getNextToCurrent();
+        } else {
+          this.word.getPrevToCurrent();
+        }
         this.color = getColor();
         this.transform = getRotateZ();
         this.fontSize = getFontSize(this.word.curItem.name);
         this.classObject = this.setAnimation();
-        this.offset = 0;
-      } else if (this.offset > 50) {
-        this.word.getPrevToCurrent();
-        // this.fontSize = this.word.getFontSize();
-        this.color = getColor();
-        this.transform = getRotateZ();
-        this.fontSize = getFontSize(this.word.curItem.name);
-        this.classObject = this.setAnimation();
-        this.offset = 0;
-      } else {
-        this.offset = 0;
+        this.audioPlay.src = this.word.curItem.audioFile;
       }
-    },
-    del() {
-      if (confirm("Delete?")) {
-        this.word.delWord();
-      }
+      this.offset = 0;
     }
   }
 };
@@ -163,12 +165,6 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-div.detail header {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  background-color: #eee;
-}
 div section.setup-group {
   flex: 10;
 }
@@ -183,13 +179,13 @@ div section.play-group {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  touch-action: pan-y;
 }
 .word {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  touch-action: pan-y;
 }
 .word > .mainword {
   animation-direction: alternate;
@@ -204,7 +200,15 @@ div section.play-group {
   animation: skew2 1s infinite;
 }
 .roll {
-  animation: roll 2s infinite;
+  animation: roll 3s infinite;
+}
+.example {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.example > ul > li {
+  margin: 10vw 10vh;
 }
 .name-value-reset {
   display: flex;

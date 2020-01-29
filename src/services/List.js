@@ -13,8 +13,11 @@ export default class List {
     this.list = await getList(this.storeName, this.direction, this.indexName)
     return this.list
   }
-  async add(val) {
+  async addValue(val){
     await addValue(this.storeName, val)
+  }
+  async add(val) {
+    await this.addValue(val)
     await this.getList()
   }
   async delById(id) {

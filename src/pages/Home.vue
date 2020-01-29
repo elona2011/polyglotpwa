@@ -20,9 +20,9 @@
           <div @click="chineseChar2">二类字</div>
           <div @click="chineseChar1">一类字</div>
           <div @click="cnWord">语文</div>
-          <div @click="engWord">英语单词</div>
-          <div>英语句子</div>
-          <div>6</div>
+          <div @click="engWord">儿童单词</div>
+          <div @click="engSentence">儿童句子</div>
+          <div @click="kidTodo">儿童todo</div>
         </section>
       </div>
     </div>
@@ -52,11 +52,17 @@ export default {
     engWord() {
       this.$router.push({ path: `list/enWords` });
     },
+    engSentence() {
+      this.$router.push({ path: `list/enSentences` });
+    },
     eng() {
       this.$router.push({ path: `list/enDadWords` });
     },
     todo() {
       this.$router.push({ path: `list/todo` });
+    },
+    kidTodo() {
+      this.$router.push({ path: `list/kidTodo` });
     },
     listen() {
       this.$router.push({ path: `listen` });
