@@ -2,7 +2,7 @@
   <section :class="layout">
     <ul>
       <li
-        v-for="(item,n) in dataObj.list"
+        v-for="(item,n) in dataObj.list.filter(n=>!n.isCheck)"
         :key="item.id"
         @click="detail(n)"
         @pointerdown="down($event,item)"
@@ -10,16 +10,32 @@
         @pointerup="up($event,item)"
       >
         <span>{{item.name}}</span>
+        <input @click.stop="check($event,item)" type="checkbox" v-model="item.isCheck"/>
+      </li>
+    </ul>
+    <ul>
+      <li
+        v-for="(item,n) in dataObj.list.filter(n=>n.isCheck)"
+        :key="item.id"
+        @click="detail(n)"
+        @pointerdown="down($event,item)"
+        @pointermove="move($event,item)"
+        @pointerup="up($event,item)"
+      >
+        <span>{{item.name}}</span>
+        <input @click.stop="check($event,item)" type="checkbox" v-model="item.isCheck"/>
       </li>
     </ul>
   </section>
 </template>
 
 <script>
+import List from "../services/List";
+
 export default {
   props: {
     dataObj: {
-      type: Object,
+      type: List,
       required: true
     },
     detailRoute: {
@@ -34,7 +50,6 @@ export default {
   },
   data() {
     return {
-      list: [],
       x: 0,
       li: null,
       offset: 0
@@ -44,6 +59,10 @@ export default {
     this.dataObj.getList();
   },
   methods: {
+    check(e, item) {
+      item.isCheck = e.target.checked;
+      this.dataObj.addValue(item);
+    },
     detail(i) {
       this.dataObj.setIndex(i);
       this.detailRoute &&
@@ -87,6 +106,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+ul > li > input {
+  display: none;
+}
 .grid ul {
   display: inline-grid;
   grid-template-columns: repeat(5, 20vw);
@@ -120,5 +142,25 @@ export default {
   margin-bottom: 2px;
   touch-action: pan-y;
   padding: 5px;
+}
+.checkbox li {
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+  height: 8vh;
+  background-color: bisque;
+  /* justify-content: center; */
+  margin-bottom: 2px;
+  touch-action: pan-y;
+  padding: 5px;
+}
+.checkbox li > span {
+  flex: 1;
+  text-align: left;
+}
+.checkbox li > input {
+  display: inline-block;
+  width: 6vh;
+  height: 6vh;
 }
 </style>

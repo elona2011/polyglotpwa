@@ -95,9 +95,11 @@ export default {
     },
     remember() {
       this.word.remember();
+      this.refreshStyle();
     },
     forget() {
       this.word.forget();
+      this.refreshStyle();
     },
     down(e) {
       x = e.x;
@@ -112,13 +114,16 @@ export default {
         } else {
           this.word.getPrevToCurrent();
         }
-        this.color = getColor();
-        this.transform = getRotateZ();
-        this.fontSize = getFontSize(this.word.curItem.name);
-        this.classObject = this.setAnimation();
-        this.audioPlay.src = this.word.curItem.audioFile;
+        this.refreshStyle();
       }
       this.offset = 0;
+    },
+    refreshStyle() {
+      this.color = getColor();
+      this.transform = getRotateZ();
+      this.fontSize = getFontSize(this.word.curItem.name);
+      this.classObject = this.setAnimation();
+      this.audioPlay.src = this.word.curItem.audioFile;
     }
   }
 };

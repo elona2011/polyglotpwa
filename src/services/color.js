@@ -9,7 +9,7 @@ export const getRotateZ = () => {
 }
 export const getFontSize = val => {
   if (val && val.length == 1) {
-    return 15 + Math.floor(Math.random() * 60) + "vw";
+    return 30 + Math.floor(Math.random() * 40) + "vw";
   } else {
     return "10vw"
   }

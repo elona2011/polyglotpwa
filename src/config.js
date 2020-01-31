@@ -1,4 +1,4 @@
-import { storeName_enSentences, storeName_cnWords, storeName_words, storeName_words_1, storeName_todo, storeName_enWords, storeName_enDadWords } from "./services/db/config";
+import { storeName_enSentences, storeName_kidTodo, storeName_cnWords, storeName_words, storeName_words_1, storeName_todo, storeName_enWords, storeName_enDadWords } from "./services/db/config";
 
 export const getPageConfig = pageName => {
   return {
@@ -20,7 +20,12 @@ export const getPageConfig = pageName => {
     [storeName_todo]: {
       title: 'todo',
       storeName: storeName_todo,
-      layout: 'block'
+      layout: 'checkbox'
+    },
+    [storeName_kidTodo]: {
+      title: 'kidTodo',
+      storeName: storeName_kidTodo,
+      layout: 'checkbox'
     },
     [storeName_enWords]: {
       title: 'eng',

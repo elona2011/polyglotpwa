@@ -36,14 +36,16 @@ export default class Word extends List {
       exp,
       forgetNum: 10,
       totalNum: 1,
-      date: +new Date()
+      date: +new Date(),
+      isCheck: false,
     })
   }
 
-  async editWord({ name, audioFile, exp }) {
+  async editWord({ name, audioFile, exp, isCheck = false }) {
     this.curItem.name = name
     this.curItem.audioFile = audioFile
     this.curItem.exp = exp
+    this.curItem.isCheck = isCheck
     await this.add(this.curItem)
   }
 
