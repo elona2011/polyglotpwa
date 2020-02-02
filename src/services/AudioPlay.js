@@ -14,7 +14,8 @@ export default class AudioPlay {
     this.isPlay = false
     if (file) {
       this.src = file
-      this.audio.playbackRate = playbackRate
+      // debugger
+      // this.audio.playbackRate = playbackRate
     }
     this.cbs = {
       onloadedmetadata: [],

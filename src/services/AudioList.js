@@ -14,11 +14,13 @@ export default class AudioList extends List {
     this.currentTime = 0
     this.duration = 0
     this.isAllLoop = false
-    // this.isPlay = false
     this.file = {}
     this.reload = false
     audioPlay.onloadedmetadata(e => {
       this.duration = this.audioPlay.duration
+      this.audioPlay.playbackRate = this.playbackRate
+      this.audioPlay.currentTime = this.currentTime
+      this.audioPlay.loop = !this.isAllLoop
       dbSetConfig(this.config)
     })
     audioPlay.ontimeupdate(e => {
@@ -30,18 +32,14 @@ export default class AudioList extends List {
     })
     this.audioPlay = audioPlay;
     (async () => {
-      this.init()
+      await this.getConfig()
+      await this.getCurrent()
+      if (this.curItem) {
+        this.audioPlay.src = this.curItem
+        this.name = this.curItem.name
+        // this.isInit = true
+      }
     })()
-  }
-
-  async init() {
-    await this.getConfig()
-    await this.getCurrent()
-    if (this.curItem) {
-      this.audioPlay.src = this.curItem
-      this.name = this.curItem.name
-      // this.isInit = true
-    }
   }
 
   async getConfig() {
@@ -52,8 +50,6 @@ export default class AudioList extends List {
       // }
       Object.assign(this, config)
       // this.audioPlay.index = this.index
-      this.audioPlay.playbackRate = this.playbackRate
-      this.audioPlay.currentTime = this.currentTime
     }
   }
 
@@ -105,6 +101,8 @@ export default class AudioList extends List {
 
   playCurItem() {
     this.audioPlay.play(this.curItem)
+    this.audioPlay.playbackRate = this.playbackRate
+    this.audioPlay.loop = !this.isAllLoop
   }
 
   get config() {
