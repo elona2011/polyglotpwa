@@ -21,6 +21,16 @@
         <PlayButton :audioPlay="record.audioPlay"></PlayButton>
         <button class="item" @pointerdown="recordStart" @pointerup="recordStop">record</button>
       </div>
+      <div class="group-item">
+        <span class="name">image:</span>
+        <button class="item" @click="captureImage">capture</button>
+      </div>
+      <div class="group-item">
+        <video id="stream" width="320" height="240"></video>
+      </div>
+      <div class="group-item">
+        <canvas id="capture" width="320" height="240"></canvas>
+      </div>
     </section>
     <section class="play-group">
       <div>
@@ -55,6 +65,11 @@ export default {
     TitleBar,
     PlayButton
   },
+  mounted() {
+    this.videoNode = document.getElementById("stream");
+    this.capture = document.getElementById("capture");
+    this.record.videoStart(this.videoNode);
+  },
   methods: {
     recordStart(e) {
       this.record.recordStart();
@@ -63,6 +78,9 @@ export default {
     recordStop() {
       this.record.recordStop();
       console.log("stop");
+    },
+    captureImage() {
+      this.record.captureImage(this.capture);
     },
     Add() {
       if (this.newWord) {

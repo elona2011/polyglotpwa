@@ -2,9 +2,9 @@
   <section :class="layout">
     <ul>
       <li
-        v-for="(item,n) in dataObj.list.filter(n=>!n.isCheck)"
-        :key="item.id"
-        @click="detail(n)"
+        v-for="(item) in dataObj.list.filter(n=>!n.isCheck)"
+        :key="item.name"
+        @click="detail(item.name)"
         @pointerdown="down($event,item)"
         @pointermove="move($event,item)"
         @pointerup="up($event,item)"
@@ -15,9 +15,9 @@
     </ul>
     <ul>
       <li
-        v-for="(item,n) in dataObj.list.filter(n=>n.isCheck)"
-        :key="item.id"
-        @click="detail(n)"
+        v-for="(item) in dataObj.list.filter(n=>n.isCheck)"
+        :key="item.name"
+        @click="detail(item.name)"
         @pointerdown="down($event,item)"
         @pointermove="move($event,item)"
         @pointerup="up($event,item)"
@@ -55,16 +55,13 @@ export default {
       offset: 0
     };
   },
-  created() {
-    this.dataObj.getList();
-  },
   methods: {
     check(e, item) {
       item.isCheck = e.target.checked;
-      this.dataObj.addValue(item);
+      this.dataObj.edit(item);
     },
-    detail(i) {
-      this.dataObj.setIndex(i);
+    detail(name) {
+      this.dataObj.setIndexByName(name);
       this.detailRoute &&
         this.$router.push({
           path: `/${this.detailRoute}/${this.dataObj.storeName}`
@@ -92,7 +89,7 @@ export default {
       if (this.li) {
         let rect = this.li.getBoundingClientRect();
         if (Math.abs(this.offset) > rect.width / 2) {
-          this.dataObj.delById(item.id);
+          this.dataObj.delByName(item.name);
           // this.list = await mp3.getMp3List();
         } else {
           this.li.setAttribute("style", ``);

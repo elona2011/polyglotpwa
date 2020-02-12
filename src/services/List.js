@@ -1,43 +1,52 @@
-import { addValue, getList, delById } from "./db/db";
+import { create, edit, getList, delByName } from "./Interfaces";
+import { getList as getListDb } from "./db/db";
 
 export default class List {
   constructor({ storeName, indexName, direction }) {
+    if (List.hasOwnProperty(storeName) && List[storeName] instanceof List) {
+      return List[storeName]
+    }
+    List[storeName] = this
     this.list = [];
     this.index = 0
     this.storeName = storeName
     this.indexName = indexName
     this.direction = direction
-    this.curItem = {}
+    this.curItem = {};
+    this.getList()
   }
+
   async getList() {
+    // this.list = await getListDb(this.storeName)
     this.list = await getList(this.storeName, this.direction, this.indexName)
-    return this.list
+    this.setIndex()
   }
-  async addValue(val){
-    await addValue(this.storeName, val)
-  }
+
   async add(val) {
-    await this.addValue(val)
+    await create(this.storeName, val)
     await this.getList()
   }
-  async delById(id) {
-    await delById(this.storeName, id)
+  async edit(val) {
+    await edit(this.storeName, val)
+    await this.getList()
+  }
+  async delByName(name) {
+    await delByName(this.storeName, name)
     await this.getList()
   }
   setIndex(i) {
-    this.index = i
-    return this.curItem = this.list[i]
-  }
-  async getCurrent() {
-    await this.getList()
+    if (i !== undefined) {
+      this.index = i
+    }
     return this.curItem = this.list[this.index]
   }
-  // isCurItemEmpty() {
-  //   if (Object.keys(this.curItem).length == 0) {
-  //     return true
-  //   } else {
-  //     return false
-  //   }
+  setIndexByName(name) {
+    let i = this.list.findIndex(n => n.name === name)
+    return this.setIndex(i)
+  }
+  // async getCurrent() {
+  //   await this.getList()
+  //   return this.curItem = this.list[this.index]
   // }
   getNextToCurrent({ isLoop } = {}) {
     return this.setIndex(this.getNextIndex(isLoop))

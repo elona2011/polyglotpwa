@@ -45,21 +45,24 @@ export const delById = async (storeName, id) => {
   await tx.done
 }
 
-// const getList = async (storeName) => {
-//   let db = await openMyDB()
-//   let list = await db.transaction(storeName).objectStore(storeName).getAll()
-//   return list
-// }
-
-export const getList = async function (storeName, direction, indexName) {
-  let cursor = await getCursor(storeName, direction, indexName)
-  let list = []
-  while (cursor) {
-    list.push(cursor.value)
-    cursor = await cursor.continue();
-  }
+export const getList = async (storeName) => {
+  let db = await openMyDB()
+  let list = await db.transaction(storeName).objectStore(storeName).getAll()
   return list
 }
+export const setList = async (storeName)=>{
+  
+}
+
+// export const getList = async function (storeName, direction, indexName) {
+//   let cursor = await getCursor(storeName, direction, indexName)
+//   let list = []
+//   while (cursor) {
+//     list.push(cursor.value)
+//     cursor = await cursor.continue();
+//   }
+//   return list
+// }
 
 const getCursor = async function (storeName, direction, indexName) {
   let db = await openMyDB()

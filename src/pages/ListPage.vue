@@ -1,18 +1,11 @@
 <template>
   <div class="main">
     <header>
-      <TitleBar
-        :title="words.title"
-        parent-name="home"
-      >
+      <TitleBar :title="title" parent-name="home">
         <strong @click="clickPlus">+</strong>
       </TitleBar>
     </header>
-    <List
-      :dataObj="words"
-      detailRoute="listdetail"
-      :layout="words.layout"
-    />
+    <List :dataObj="words" detailRoute="listdetail" :layout="words.layout" />
   </div>
 </template>
 
@@ -30,6 +23,11 @@ export default {
   components: {
     TitleBar,
     List
+  },
+  computed: {
+    title() {
+      return `${this.words.title}(${this.words.list.length})`;
+    }
   },
   methods: {
     clickPlus() {

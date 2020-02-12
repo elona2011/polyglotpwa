@@ -24,8 +24,8 @@ module.exports = {
   devServer: {
     // port: 38157
     proxy: {
-      '/login': {
-        target: 'http://192.168.1.4',
+      '/db': {
+        target: 'http://localhost:8081',
         secure: false
       }
     }

@@ -51,6 +51,7 @@ import { getColor, getRotateZ, getFontSize } from "../services/color";
 import PlayButton from "../components/PlayButton";
 import AudioPlay from "../services/AudioPlay";
 import AudioList from "../services/AudioList";
+import { storeName_words_2 } from "../services/db/config";
 
 let x;
 export default {
@@ -76,14 +77,14 @@ export default {
     };
   },
   async mounted() {
-    await this.word.getCurrent();
+    // await this.word.getCurrent();
     let mp3 = new AudioList();
     this.audioPlay.src = this.word.curItem && this.word.curItem.audioFile;
     mp3.insertAudio(this.audioPlay);
   },
   methods: {
     setAnimation() {
-      if (this.storeName === "words") {
+      if (this.storeName === storeName_words_2) {
         let pro = ["shake", "skew", "skew2", "roll", ""];
         let num = Math.floor(Math.random() * pro.length);
         return {

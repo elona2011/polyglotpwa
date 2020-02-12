@@ -31,6 +31,7 @@
 
 <script>
 import TitleBar from "../components/TitleBar";
+import { storeName_words_2 } from "../services/db/config";
 
 export default {
   components: {
@@ -44,7 +45,7 @@ export default {
       this.$router.push({ path: `list/words1` });
     },
     chineseChar2() {
-      this.$router.push({ path: `list/words` });
+      this.$router.push({ path: `list/${storeName_words_2}` });
     },
     cnWord() {
       this.$router.push({ path: `list/cnWords` });

@@ -33,10 +33,9 @@ export default class AudioList extends List {
     this.audioPlay = audioPlay;
     (async () => {
       await this.getConfig()
-      await this.getCurrent()
       if (this.curItem) {
         this.audioPlay.src = this.curItem
-        this.name = this.curItem.name
+        this.name = this.curItem && this.curItem.name
         // this.isInit = true
       }
     })()
@@ -69,7 +68,7 @@ export default class AudioList extends List {
     if (i != this.index) {
       this.reload = true
       super.setIndex(i)
-      this.name = this.curItem.name
+      this.name = this.curItem && this.curItem.name
       dbSetConfig(this.config)
     }
   }

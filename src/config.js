@@ -1,4 +1,4 @@
-import { storeName_enSentences, storeName_kidTodo, storeName_cnWords, storeName_words, storeName_words_1, storeName_todo, storeName_enWords, storeName_enDadWords } from "./services/db/config";
+import { storeName_enSentences, storeName_kidTodo, storeName_cnWords, storeName_words_2, storeName_words_1, storeName_todo, storeName_enWords, storeName_enDadWords } from "./services/db/config";
 
 export const getPageConfig = pageName => {
   return {
@@ -7,9 +7,9 @@ export const getPageConfig = pageName => {
       storeName: storeName_cnWords,
       layout: 'inline'
     },
-    [storeName_words]: {
+    [storeName_words_2]: {
       title: '二类字',
-      storeName: storeName_words,
+      storeName: storeName_words_2,
       layout: 'grid'
     },
     [storeName_words_1]: {
